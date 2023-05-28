@@ -4,20 +4,9 @@ import {  useEffect } from 'react';
 
 function InputVal({inputType, iconType, inputRef, func, innerIcon1,innerIcon2,unseen,seen,toHide,toSee ,checkUser,checkPassword}) {
 
-    var x = 1;
-
-    useEffect(() => {
-        if (x===1) {
-            if(!( inputRef.current.classList.contains("inputPassword"))) {
-                inputRef.current.value = 'dfddf';
-                x = 0
-            }
-        }
-
-    }, [x]);
 
 
-
+    
 
 
 

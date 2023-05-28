@@ -2,7 +2,7 @@ import ChatPage from "./ChatPage/ChatPage";
 import React from "react";
 
 
-function ChatComponent({username}) {
+function ChatComponent({username, token}) {
 
     const setPage = () => {
 
@@ -23,7 +23,7 @@ function ChatComponent({username}) {
     setPage();
     return (
         <div className="h-100 d-flex justify-content-center">
-            <ChatPage username={username}/>
+            <ChatPage username={username} token={token}/>
         </div>
     );
 }

@@ -40,14 +40,31 @@ function RegisterComponent() {
     const [showPasswordRules, setShowPasswordRules] = useState(null);
 
     function handleClick(event) {
+        foo()
         accountsDatabase[newUserNickname] = {
             password: passwordVal.current.value,
             first_name: newUserFirstName, last_name: newUserLastName,
             pic: !imageSrc.startsWith("data:image/") || imageSrc === "/static/media/user.4eddcc79e0488c03d196.png" ?
                 easter : imageSrc
         }
-        console.log(newUserNickname);
-        console.log(accountsDatabase[newUserNickname]);
+    }
+
+    const foo = async () => {
+        const data = {
+            username: newUserNickname,
+            password: passwordVal.current.value,
+            displayName: newUserFirstName + " " + newUserLastName,
+            profilePic: !imageSrc.startsWith("data:image/") || imageSrc === "/static/media/user.4eddcc79e0488c03d196.png" ?
+                easter : imageSrc
+        }
+        const res = await fetch('http://localhost:5000/api/Users', {
+            'method': 'post',
+            'headers': {
+                'Content-Type': 'application/json',
+            },
+            'body': JSON.stringify(data)
+        })
+        console.log(res)
     }
 
     function checkAndChange(element, id, setNotification) {

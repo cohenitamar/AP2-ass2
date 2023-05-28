@@ -9,6 +9,8 @@ import Name_Validation from "./Name/Name_Validation";
 import password_Validation from "./Password/Password_Validation";
 import Password_Rules from "./Password/Password_Rules";
 import {Link} from "react-router-dom";
+import accountsDatabase from "../LoginComponent/AccountsDatabase";
+import easter from "./UploadPic/easter_egg.png";
 
 
 function RegisterComponent() {
@@ -18,11 +20,13 @@ function RegisterComponent() {
     const passwordVal = useRef(null);
     const confirmPassword = useRef(null);
 
+
     // const [user, setUser] = useState({first: "",last: "", password: "", nick: "" });
     const [newUserNickname, setNewUserNickname] = useState("");
     const [newUserFirstName, setNewUserFirstName] = useState("");
     const [newUserLastName, setNewUserLastName] = useState("");
     const [newUserPassword, setNewUserPassword] = useState("");
+    const [wasNext,setWasNext] = useState("");
 
 
     const [imageSrc, setImageSrc] = useState(user);
@@ -35,6 +39,17 @@ function RegisterComponent() {
 
     const [showPasswordRules, setShowPasswordRules] = useState(null);
 
+    function handleClick(event){
+
+
+        accountsDatabase[newUserNickname] = {
+            password: passwordVal.current.value,
+            first_name: newUserFirstName, last_name: newUserLastName,
+            pic: !imageSrc.startsWith("data:image/") || imageSrc === "/static/media/user.4eddcc79e0488c03d196.png" ?
+                easter : imageSrc}
+
+        console.log(accountsDatabase[newUserNickname]);
+    }
 
     function checkAndChange(element, id, setNotification) {
         if (element.current.value === "") {
@@ -75,8 +90,10 @@ function RegisterComponent() {
             }
         } else if (currentStep === 2) {
             isPasswordValid = password_Validation(passwordVal, confirmPassword, notiPassword);
+
             if (isPasswordValid === 0) {
-                setNewUserPassword(passwordVal.current.value || "");
+                setNewUserPassword(newUserPassword || "");
+                console.log(newUserPassword);
                 setCurrentStep((prevStep) => prevStep + 1);
             } else {
                 setNotPassword("* Invalid password");
@@ -86,13 +103,17 @@ function RegisterComponent() {
     };
     const handlePrevious = () => {
 
+        setWasNext("1");
         setCurrentStep((prevStep) => prevStep - 1);
+
+
+
 
     };
     const showStep = () => {
         switch (currentStep) {
             case 1:
-                return Name_Registration(userFirstName, userLastName, userNickname, notiFirst, notiLast, notiNick, newUserFirstName, newUserLastName, newUserNickname);
+                return Name_Registration(userFirstName, userLastName, userNickname, notiFirst, notiLast, notiNick, newUserFirstName, newUserLastName, newUserNickname,wasNext,setWasNext);
             case 2:
                 return (
                     <>

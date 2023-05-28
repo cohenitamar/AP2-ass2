@@ -9,10 +9,12 @@ function LoginComponent({setUsername}) {
         document.getElementById("bodyOfIndex").classList.remove("bodyChat");
         document.getElementById("bodyOfIndex").classList.remove("bodyRegister");
         document.getElementById("root").classList.remove("h-100");
+        document.getElementById("root").classList.remove("overflow-hidden");
         document.getElementById("root").classList.remove("m-0");
         document.getElementById("root").classList.remove("p-0");
         document.getElementById("htmlOfIndex").classList.remove("d-flex");
         document.getElementById("htmlOfIndex").classList.remove("justify-content-center");
+
 
         document.getElementById("bodyOfIndex").classList.add("bodyLogin");
         document.getElementById("bodyOfIndex").classList.add("row");

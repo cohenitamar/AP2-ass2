@@ -1,12 +1,25 @@
 import '../register.css'
 import '../../shared_background.jpg'
 import UserInput from "../UserInput/UserInput";
-import React, {useRef} from "react";
+import React, {useEffect, useRef} from "react";
 
 
 
 
-function Name_Registration(userFirstName, userLastName, userNickname, notiFirst, notiLast, notiNick, newUserFirstName, newUserLastName, newUserNickname) {
+function Name_Registration(userFirstName, userLastName, userNickname, notiFirst, notiLast, notiNick, newUserFirstName, newUserLastName, newUserNickname,wasNext,setWasNext) {
+
+    // var x = 1;
+    //
+    // useEffect(() => {
+    //     if (x==="1") {
+    //             userFirstName.current.value = 'dfddf';
+    //             userLastName.current.value="sddsadsa";
+    //              userNickname.current.value="sdsassaa";
+    //             x = 0
+    //         }
+    //
+    // }, [x]);
+
 
     return (
         <div className="textFiledR">

@@ -1,17 +1,21 @@
 import '../register.css'
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
-function UserInput( {icon , type, text, label, func,reference,string}){
+function UserInput({icon, type, text, label, func, reference, wasNext, setWasNext, state}) {
 
-    function change (string){
-        if (string !=null){
-            reference.value = string;
+
+    useEffect(() => {
+        if (wasNext > 0) {
+            reference.current.value = state;
+            setWasNext(wasNext - 1);
         }
-    }
 
-    return(
+    }, [wasNext, setWasNext]);
+
+
+    return (
         <div className="input-group flex-nowrap">
-                    <span className="input-group-text coloringR" >
+                    <span className="input-group-text coloringR">
                         <span id="icons">
                             <i className={icon}></i>
                         </span>
@@ -22,10 +26,10 @@ function UserInput( {icon , type, text, label, func,reference,string}){
                    data-bs-title="Tooltip on top"
                    data-bs-toggle="tooltip"
                    className="form-control"
-                   placeholder= {text}
-                   aria-label= {label}
+                   placeholder={text}
+                   aria-label={label}
                    aria-describedby="addon-wrapping"
-                   onInput = {func}
+                   onInput={func}
                    ref={reference}
             />
 

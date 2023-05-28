@@ -4,70 +4,64 @@ import UserInput from "../UserInput/UserInput";
 import React, {useEffect, useRef} from "react";
 
 
-
-
-function Name_Registration(userFirstName, userLastName, userNickname, notiFirst, notiLast, notiNick, newUserFirstName, newUserLastName, newUserNickname,wasNext,setWasNext) {
-
-    // var x = 1;
-    //
-    // useEffect(() => {
-    //     if (x==="1") {
-    //             userFirstName.current.value = 'dfddf';
-    //             userLastName.current.value="sddsadsa";
-    //              userNickname.current.value="sdsassaa";
-    //             x = 0
-    //         }
-    //
-    // }, [x]);
+function Name_Registration(userFirstName, userLastName, userNickname, notiFirst, notiLast, notiNick,
+                           newUserFirstName, newUserLastName, newUserNickname, wasNext, setWasNext) {
 
 
     return (
         <div className="textFiledR">
 
-
-                    <div className="textFiledR">
-                        <div className="titlesR mb-2">First Name</div>
-                        <div id="firstNameDivR">
-                        <UserInput
-                            icon={"bi bi-person"}
-                            type={"text"}
-                            text={"First Name"}
-                            label={"First Name"}
-                            reference={userFirstName}
-                            string={newUserFirstName}
-                            // onChange={(e) => (userFirstName  = e.target.value) }
-                        />
-                    </div>
+            <div className="textFiledR">
+                <div className="titlesR mb-2">First Name</div>
+                <div id="firstNameDivR">
+                    <UserInput
+                        icon={"bi bi-person"}
+                        type={"text"}
+                        text={"First Name"}
+                        label={"First Name"}
+                        reference={userFirstName}
+                        wasNext={wasNext}
+                        setWasNext={setWasNext}
+                        state={newUserFirstName}
+                        // onChange={(e) => (userFirstName  = e.target.value) }
+                    />
                 </div>
+            </div>
             <div className="nameNotification">{notiFirst}</div>
 
 
             <div className="inputUserR">
-                        <div className="titlesR mb-2">Last Name</div>
-                        <div id="lastNameDivR">
-                        <UserInput
-                            icon={"bi bi-person"}
-                            type={"text"}
-                            text={"Last Name"}
-                            label={"Last Name"}
-                            reference={userLastName}
-                        />
+                <div className="titlesR mb-2">Last Name</div>
+                <div id="lastNameDivR">
+                    <UserInput
+                        icon={"bi bi-person"}
+                        type={"text"}
+                        text={"Last Name"}
+                        label={"Last Name"}
+                        wasNext={wasNext}
+                        reference={userLastName}
+                        state={newUserLastName}
+                        setWasNext={setWasNext}
+                    />
                 </div>
             </div>
             <div className="nameNotification">{notiLast}</div>
 
             {/*<div className="textFiledR">*/}
-                <div className="titlesR mb-2">Nickname</div>
-                <div id="nicknameDivR">
-                    <UserInput
-                        icon={"bi bi-person"}
-                        type={"text"}
-                        text={"Nickname"}
-                        label={"Nickname"}
-                        reference={userNickname}
-                        // onChange={(e) => (userFirstName  = e.target.value) }
-                    />
-                </div>
+            <div className="titlesR mb-2">Nickname</div>
+            <div id="nicknameDivR">
+                <UserInput
+                    icon={"bi bi-person"}
+                    type={"text"}
+                    text={"Nickname"}
+                    label={"Nickname"}
+                    wasNext={wasNext}
+                    reference={userNickname}
+                    setWasNext={setWasNext}
+                    state={newUserNickname}
+                    // onChange={(e) => (userFirstName  = e.target.value) }
+                />
+            </div>
             {/*</div>*/}
             <div className="nameNotification">{notiNick}</div>
 

@@ -19,14 +19,14 @@ function RegisterComponent() {
     const userNickname = useRef(null);
     const passwordVal = useRef(null);
     const confirmPassword = useRef(null);
-
+    const [rules, setRules] = useState(false);
 
     // const [user, setUser] = useState({first: "",last: "", password: "", nick: "" });
     const [newUserNickname, setNewUserNickname] = useState("");
     const [newUserFirstName, setNewUserFirstName] = useState("");
     const [newUserLastName, setNewUserLastName] = useState("");
     const [newUserPassword, setNewUserPassword] = useState("");
-    const [wasNext,setWasNext] = useState("");
+    const [wasNext, setWasNext] = useState(0);
 
 
     const [imageSrc, setImageSrc] = useState(user);
@@ -39,15 +39,14 @@ function RegisterComponent() {
 
     const [showPasswordRules, setShowPasswordRules] = useState(null);
 
-    function handleClick(event){
-
-
+    function handleClick(event) {
         accountsDatabase[newUserNickname] = {
             password: passwordVal.current.value,
             first_name: newUserFirstName, last_name: newUserLastName,
             pic: !imageSrc.startsWith("data:image/") || imageSrc === "/static/media/user.4eddcc79e0488c03d196.png" ?
-                easter : imageSrc}
-
+                easter : imageSrc
+        }
+        console.log(newUserNickname);
         console.log(accountsDatabase[newUserNickname]);
     }
 
@@ -82,7 +81,6 @@ function RegisterComponent() {
                 setNewUserFirstName(userFirstName.current.value || "");
                 setNewUserLastName(userLastName.current.value || "");
                 setNewUserNickname(userNickname.current.value || "");
-
                 setCurrentStep((prevStep) => prevStep + 1);
                 changeNameColor(userFirstName, userLastName, userNickname);
             } else {
@@ -93,7 +91,7 @@ function RegisterComponent() {
 
             if (isPasswordValid === 0) {
                 setNewUserPassword(newUserPassword || "");
-                console.log(newUserPassword);
+                  handleClick();
                 setCurrentStep((prevStep) => prevStep + 1);
             } else {
                 setNotPassword("* Invalid password");
@@ -102,18 +100,18 @@ function RegisterComponent() {
 
     };
     const handlePrevious = () => {
-
-        setWasNext("1");
+        setRules(false);
+        setShowPasswordRules(null);
+        setWasNext(3);
         setCurrentStep((prevStep) => prevStep - 1);
-
-
 
 
     };
     const showStep = () => {
         switch (currentStep) {
             case 1:
-                return Name_Registration(userFirstName, userLastName, userNickname, notiFirst, notiLast, notiNick, newUserFirstName, newUserLastName, newUserNickname,wasNext,setWasNext);
+                return Name_Registration(userFirstName, userLastName, userNickname, notiFirst, notiLast, notiNick,
+                    newUserFirstName, newUserLastName, newUserNickname, wasNext, setWasNext);
             case 2:
                 return (
                     <>
@@ -123,8 +121,9 @@ function RegisterComponent() {
                                 <div className="bi bi-question-circle-fill"
                                      data-bs-toggle="tooltip"
                                      data-bs-placement="left"
-                                     onMouseEnter={showRules}
-                                     onMouseLeave={unshowRules}>
+                                     ///TODO need to make a condition like
+                                    ///TODO {condition === state ? showRules : unshowRules}
+                                    onClick={showRules}>
                                     <span className="tooltip-logo"></span> What is a valid password?
                                 </div>
                             </div>
@@ -134,10 +133,10 @@ function RegisterComponent() {
             case 3:
 
                 return <div>
-                    <div> Thank you for joining us, {newUserNickname} ! </div>
+                    <div> Thank you for joining us, {newUserNickname} !</div>
                     <Link to="/">
                         To Login
-                </Link>
+                    </Link>
                 </div>
 
 
@@ -147,12 +146,10 @@ function RegisterComponent() {
     };
 
     function showRules() {
-        setShowPasswordRules(<Password_Rules/>);
+        setRules(!rules)
+        rules ? setShowPasswordRules(<Password_Rules/>) : setShowPasswordRules(null);
     }
 
-    function unshowRules() {
-        setShowPasswordRules(null);
-    }
 
     const setPage = () => {
         document.getElementById("bodyOfIndex").classList.remove("bodyChat");
@@ -203,13 +200,15 @@ function RegisterComponent() {
                             </div>
                         )}
                         {currentStep === 1 && (
-                            <button type="button" className="btn bi bi-arrow-right nextButt mb-3 m-0" onClick={handleNext}>
+                            <button type="button" className="btn bi bi-arrow-right nextButt mb-3 m-0"
+                                    onClick={handleNext}>
                                 <span className="arrowIcon"></span>
                                 Next
                             </button>
                         )}
                         {currentStep === 2 && (
-                            <button type="button" className="btn bi bi bi-check-lg signUpButt mb-3 m-0" onClick={handleNext}>
+                            <button type="button" className="btn bi bi bi-check-lg signUpButt mb-3 m-0"
+                                    onClick={handleNext}>
                                 <span className="signUpIcon"></span>
                                 SignUp
                             </button>

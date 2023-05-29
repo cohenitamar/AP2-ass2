@@ -56,7 +56,6 @@
 
 
 .bodyLogin {
-
   background-image: url('../shared_background.jpg');
   background-size: cover;
   background-position: center;
@@ -64,8 +63,6 @@
   align-items: center;
   justify-content: center;
   overflow: auto;
-
-
 }
 
 .forget {
@@ -110,17 +107,15 @@
 .form-control:focus{
   border-color: rgb(1, 1, 55);
   box-shadow: 0 0 0 0.1rem rgb(1, 1, 55) ;
-
 }
 
 a {
   color: white;
-
 }
 
 .VCheck {
-  float: left;
-  margin-top: 15%;
+
+  padding-top: 5%;
   font-size: 85%;
 
 }
@@ -134,7 +129,7 @@ input.myBox {
 
 .LoginButton {
   margin-bottom: 5%;
-  margin-top: 35%;
+  margin-top: 25%;
   text-align: center;
 }
 
@@ -172,3 +167,26 @@ input.myBox {
   text-align: center;
   font-size: 100%;
 }
+
+.iconPassword{
+  color: black;
+  position: relative;
+  float: right;
+  z-index: 10;
+  right: 45px;
+  bottom: 40px;
+  cursor: pointer;
+}
+.inputPassword{
+  padding-right: 30px;
+}
+.check{
+ font-size: 80%;
+  color: #c22b2b;
+}
+.LoginButton2 {
+  margin-bottom: 5%;
+  margin-top: 17%;
+  text-align: center;
+}
+

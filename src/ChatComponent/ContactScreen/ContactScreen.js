@@ -5,13 +5,13 @@ import Logout from "../Logout/Logout";
 import React, {useRef} from "react";
 
 
-function ContactScreen({username, doSearch, setContacts, setFilter, contacts, setMessage, setContactOnChat, filters}) {
+function ContactScreen({username, doSearch, setContacts, token, setFilter, contacts, setMessage, setContactOnChat, filters}) {
     const searchBox = useRef("");
 
     return (
         <div className="col-12 col-md-6 col-lg-4 p-0 h-100" id="contactsContainer">
             <div className="card h-100 rounded-0 bg-light">
-                <TopBar username={username} onAddContact={setContacts}
+                <TopBar username={username} onAddContact={setContacts} token={token}
                         filterUpdate={setFilter} contactsList={contacts} searchBox={searchBox}/>
                 <Search doSearch={doSearch} searchBox={searchBox}/>
                 <ContactList contacts={filters} setContactOnChat = {setContactOnChat} setMessage={setMessage}/>

@@ -21,12 +21,13 @@ function ProtectedRoute({element, username}) {
 
 function App() {
     const [username, setUsername] = useState("");
+    const [token, setToken] = useState("");
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/chat" element={<ProtectedRoute username={username}
-                                                             element={<ChatComponent username={username}/>}/>}/>
-                <Route path={"/"} element={<LoginComponent setUsername={setUsername}/>}/>
+                                                             element={<ChatComponent username={username} token={token}/>}/>}/>
+                <Route path={"/"} element={<LoginComponent setUsername={setUsername} setToken={setToken}/>}/>
                 <Route path="/register" element={<RegisterComponent/>}/>
                 <Route path="/register2" element={<RegisterPg2/>}/>
             </Routes>

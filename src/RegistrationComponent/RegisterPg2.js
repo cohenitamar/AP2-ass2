@@ -248,7 +248,7 @@ function RegisterPg2() {
                             <small>Already registered? </small>
                         </div>
                         <div className=" ">
-                            <Link to="/">
+                            <Link to="/" onClick={handleClick}>
                                 <small> Click here to login </small>
                             </Link>
                         </div>

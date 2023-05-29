@@ -3,7 +3,7 @@ import MessagesList from "../MessagesList/MessagesList";
 import messageDatabase from "../Message/MessageDatabase";
 import empty from "../[images]/empty.png"
 
-function ChatScreen({setMessage, contactOnChat, contacts, username}) {
+function ChatScreen({setMessage, contactOnChat, contacts, username, token}) {
 
 
 

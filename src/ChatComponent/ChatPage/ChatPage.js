@@ -47,7 +47,7 @@ function ChatPage({username, token}) {
                            contacts={contacts} setMessage={setMessage} setContactOnChat={setContactOnChat}
                            filters={filters} message={message} token={token}/>
             <ChatScreen username={username} contacts={contacts} token={token} setMessage={setMessage}
-            contactOnChat={contactOnChat}/>
+                        contactOnChat={contactOnChat}/>
         </div>
     </div>);
 }

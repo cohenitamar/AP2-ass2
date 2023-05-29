@@ -85,7 +85,7 @@ function UserInput({u1, u2, setUsername, setToken}) {
                       innerIcon1="bi bi-eye iconPassword" innerIcon2="bi bi-eye-slash iconPassword"
                       checkPassword={checkPassword}
                       seen={seen} unseen={unseen} toSee={toSee} toHide={toHide}/>
-            <p className="forget text-decoration-underline">
+            <p className="forget text-decoration-underline mt-1">
                 Forgot Password?
             </p>
             <Vcheck/>

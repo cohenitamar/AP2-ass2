@@ -29,6 +29,7 @@ function UploadPic({image, setPic, currentLevel}) {
                        type="file"
                        className="upload-inputR"
                        accept="image/*"
+                       disabled={currentLevel !== 1}
                        onChange={handleImageUpload}
                 />
             </div>

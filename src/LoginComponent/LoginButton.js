@@ -10,7 +10,7 @@ function LoginButton({handleClick, reference, classRef}){
     return(
         <div className="LoginButton"
         ref={classRef}>
-            <Link to="/chat">
+            <Link>
             <button type="button" className="btn btn-secondary" ref={reference} onClick={handleClick}>
                 Login
             </button>

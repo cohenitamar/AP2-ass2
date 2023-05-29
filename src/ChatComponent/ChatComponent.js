@@ -17,7 +17,6 @@ function ChatComponent({username, token}) {
         document.getElementById("bodyOfIndex").classList.remove("bodyLogin");
         document.getElementById("bodyOfIndex").classList.remove("row");
         document.getElementById("bodyOfIndex").classList.remove("overflow-x-hidden");
-
         }
 
     setPage();

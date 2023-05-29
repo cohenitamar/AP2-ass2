@@ -12,7 +12,8 @@ function TopBar({onAddContact ,filterUpdate , contactsList, username, searchBox,
         <Profile username={username} token={token} />
         <AddContact/>
             <ContactModal onAddContact={onAddContact}
-                          filterUpdate={filterUpdate} contactsList= {contactsList} searchBox={searchBox}/>
+                          filterUpdate={filterUpdate} contactsList= {contactsList} searchBox={searchBox}
+                          token={token}/>
         </span>
     );
 }

@@ -1,40 +1,56 @@
 import React, {useRef, useState} from 'react';
 import Avatars from "../[images]/[avatars]/Avatars";
+import easter from "../../RegistrationComponent/UploadPic/easter_egg.png";
 
 
-function ContactModal({onAddContact, filterUpdate, contactsList, searchBox}) {
+function ContactModal({onAddContact, filterUpdate, contactsList, searchBox, token}) {
 
     const [error, setError] = useState("");
 
     const inputRef = useRef(null);
     const handleAddContact = () => {
-        const refName = inputRef.current.value;
-        if (refName.length === 0) {
-            return;
-        }
-        for (let i = 0; i < contactsList.length; i++) {
-            if (contactsList[i].name === refName) {
+        foo().then(data => {
+/*            console.log(JSON.parse(data))
+            const result = data[0];
+            console.log(result)
+            if(!result) {
+                data = "";
+            } else {
+                data = JSON.parse(data[1]);
+            }*/
+            ///TODO API IS FUCKED UP! YOU CAN ADD THE SAME USER TWICE! FUCK HEMI! ADD TO MONGO-DB!
+            const refName = inputRef.current.value;
+            if (refName.length === 0) {
                 setError(
                     <div className="alert alert-danger d-flex justify-content-center">
-                        You can't add the same username twice.
+                        You must put a name in order to add.
                     </div>
                 );
                 return;
             }
-        }
-        const newContact = {
-            name: refName,
-            pic: Avatars[Math.floor(Math.random() * Avatars.length)],
-            lastMessage: "",
-            date: ""
-        };
-        onAddContact((prev) => [...prev, newContact]);
-        if (newContact.name.toLowerCase().includes(searchBox.current.value.toLowerCase())) {
-            filterUpdate((prev) => [...prev, newContact]);
-        }
-        inputRef.current.value = "";
-        setError("");
-        document.getElementById("close_modal").click();
+              /*  if (result === false) {
+                    setError(
+                        <div className="alert alert-danger d-flex justify-content-center">
+                            Invalid username.
+                        </div>
+                    );
+                    return;
+                }*/
+            const newContact = {
+                name: refName,
+                pic: Avatars[Math.floor(Math.random() * Avatars.length)],
+                lastMessage: "",
+                date: ""
+            };
+            onAddContact((prev) => [...prev, newContact]);
+            if (newContact.name.toLowerCase().includes(searchBox.current.value.toLowerCase())) {
+                filterUpdate((prev) => [...prev, newContact]);
+            }
+            inputRef.current.value = "";
+            setError("");
+            document.getElementById("close_modal").click();
+        })
+
     };
 
     function handleKeyPress(e) {
@@ -42,6 +58,31 @@ function ContactModal({onAddContact, filterUpdate, contactsList, searchBox}) {
             handleAddContact();
         }
     }
+
+
+
+    const foo = async () => {
+        const data = {username: inputRef.current.value}
+        const res = await fetch('http://localhost:5000/api/Chats', {
+            'method': 'post',
+            'headers': {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+            'body': JSON.stringify(data)
+        })
+        if(res.ok)
+            return  await res.text();
+        return false;
+    }
+
+
+
+
+
+
+
+
 
     return (
         <div className="modal fade" id="add_contact_modal" tabIndex={-1} data-bs-backdrop="static">

@@ -2,6 +2,7 @@ import '../chat.css';
 import ChatScreen from "../ChatScreen/ChatScreen";
 import React, {useState} from "react";
 import ContactScreen from "../ContactScreen/ContactScreen";
+import ADAPTER_contactList from "../../Adapters";
 function ChatPage({username, token}) {
     const [contacts, setContacts] = useState([]);
 

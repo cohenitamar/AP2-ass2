@@ -1,8 +1,9 @@
 import '../chat.css';
 import ChatScreen from "../ChatScreen/ChatScreen";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import ContactScreen from "../ContactScreen/ContactScreen";
-import ADAPTER_contactList from "../../Adapters";
+import Adapters from "../../Adapters";
+import logout from "../Logout/Logout";
 function ChatPage({username, token}) {
     const [contacts, setContacts] = useState([]);
 
@@ -17,37 +18,38 @@ function ChatPage({username, token}) {
         setFilter(contacts.filter(contact => contact.name.toLowerCase().includes(q.toLowerCase())));
 
     }
+
+    const API_getChats = async () => {
+        const res = await fetch(`http://localhost:5000/api/Chats`, {
+            'method': 'get',
+            'headers': {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            }
+        })
+        return res.text();
+    }
+
     useEffect(() => {
-        const foo = async () => {
-            const res = await fetch(`http://localhost:5000/api/Chats`, {
-                'method': 'get',
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Authorization': token
-                }
-            })
-            return res.text();
-        }
-        foo().then(data => {
-            ///console.log(data)
-            const newData = ADAPTER_contactList(JSON.parse(data));
+
+        API_getChats().then(data => {
+            const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
             setContacts(newData);
             setFilter(newData);
+
         });
     }, [username]);
-
-
-
-
 
 
     return (<div className="container h-100">
         <div className="row h-100">
             <ContactScreen username={username} doSearch={doSearch} setContacts={setContacts} setFilter={setFilter}
                            contacts={contacts} setMessage={setMessage} setContactOnChat={setContactOnChat}
-                           filters={filters} message={message} token={token}/>
+                           filters={filters} token={token} API_getChats={API_getChats}/>
             <ChatScreen username={username} contacts={contacts} token={token} setMessage={setMessage}
-                        contactOnChat={contactOnChat}/>
+                        contactOnChat={contactOnChat} message={message}
+                        setFilter={setFilter} setContacts={setContacts}
+                        API_getChats={API_getChats}/>
         </div>
     </div>);
 }

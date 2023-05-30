@@ -1,26 +1,18 @@
 import React, {useRef, useState} from 'react';
 import Avatars from "../[images]/[avatars]/Avatars";
 import easter from "../../RegistrationComponent/UploadPic/easter_egg.png";
+import Adapters from "../../Adapters";
 
 
-function ContactModal({onAddContact, filterUpdate, contactsList, searchBox, token}) {
+function ContactModal({onAddContact, filterUpdate, contactsList, searchBox, token, API_getChats}) {
 
     const [error, setError] = useState("");
 
     const inputRef = useRef(null);
     const handleAddContact = () => {
-        foo().then(data => {
-/*            console.log(JSON.parse(data))
-            const result = data[0];
-            console.log(result)
-            if(!result) {
-                data = "";
-            } else {
-                data = JSON.parse(data[1]);
-            }*/
-            ///TODO API IS FUCKED UP! YOU CAN ADD THE SAME USER TWICE! FUCK HEMI! ADD TO MONGO-DB!
-            const refName = inputRef.current.value;
-            if (refName.length === 0) {
+        ///TODO API IS FUCKED UP! YOU CAN ADD THE SAME USER TWICE! FUCK HEMI! ADD TO MONGO-DB!
+        API_postChats().then(contact => {
+            if (inputRef.current.value.length === 0) {
                 setError(
                     <div className="alert alert-danger d-flex justify-content-center">
                         You must put a name in order to add.
@@ -28,24 +20,24 @@ function ContactModal({onAddContact, filterUpdate, contactsList, searchBox, toke
                 );
                 return;
             }
-              /*  if (result === false) {
-                    setError(
-                        <div className="alert alert-danger d-flex justify-content-center">
-                            Invalid username.
-                        </div>
-                    );
-                    return;
-                }*/
-            const newContact = {
-                name: refName,
-                pic: Avatars[Math.floor(Math.random() * Avatars.length)],
-                lastMessage: "",
-                date: ""
-            };
-            onAddContact((prev) => [...prev, newContact]);
-            if (newContact.name.toLowerCase().includes(searchBox.current.value.toLowerCase())) {
-                filterUpdate((prev) => [...prev, newContact]);
+            if (!contact) {
+                setError(
+                    <div className="alert alert-danger d-flex justify-content-center">
+                        Invalid username.
+                    </div>
+                );
+                return;
             }
+            //console.log(JSON.parse(contact))
+            //const newContact = Adapters.ADAPTER_addContact(JSON.parse(contact));
+            API_getChats().then(data => {
+                const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
+                onAddContact(newData);
+                searchBox.current.value = "";
+                filterUpdate(newData);
+            });
+
+
             inputRef.current.value = "";
             setError("");
             document.getElementById("close_modal").click();
@@ -60,8 +52,7 @@ function ContactModal({onAddContact, filterUpdate, contactsList, searchBox, toke
     }
 
 
-
-    const foo = async () => {
+    const API_postChats = async () => {
         const data = {username: inputRef.current.value}
         const res = await fetch('http://localhost:5000/api/Chats', {
             'method': 'post',
@@ -71,17 +62,10 @@ function ContactModal({onAddContact, filterUpdate, contactsList, searchBox, toke
             },
             'body': JSON.stringify(data)
         })
-        if(res.ok)
-            return  await res.text();
+        if (res.ok)
+            return res.text();
         return false;
     }
-
-
-
-
-
-
-
 
 
     return (

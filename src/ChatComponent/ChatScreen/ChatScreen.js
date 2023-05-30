@@ -3,7 +3,8 @@ import MessagesList from "../MessagesList/MessagesList";
 import messageDatabase from "../Message/MessageDatabase";
 import empty from "../[images]/empty.png"
 
-function ChatScreen({setMessage, contactOnChat, contacts, username, token}) {
+function ChatScreen({setMessage, contactOnChat, setContacts, setFilter,
+                        contacts, username, token, message, API_getChats}) {
 
 
 
@@ -17,11 +18,11 @@ function ChatScreen({setMessage, contactOnChat, contacts, username, token}) {
           </span>
         </span>
                 <MessagesList username={username}
-                              message={messageDatabase[contactOnChat['name']] ?
-                                  messageDatabase[contactOnChat['name']]: []}/>
-                {contactOnChat.name !== undefined ? <MessageInputBar contactOnChat={contactOnChat}
-                                                                     setMessage={setMessage}
-                                                                     contacts={contacts}/> : ""}
+                              message={message}/>
+                {contactOnChat.name !== undefined ? <MessageInputBar
+                    API_getChats={API_getChats} username={username} contactOnChat={contactOnChat}
+                    setContacts={setContacts} setMessage={setMessage}  setFilter={setFilter}
+                    contacts={contacts} token={token}/> : ""}
             </div>
         </div>
 

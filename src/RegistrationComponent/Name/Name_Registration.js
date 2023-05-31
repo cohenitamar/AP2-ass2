@@ -4,8 +4,8 @@ import UserInput from "../UserInput/UserInput";
 import React, {useEffect, useRef} from "react";
 
 
-function Name_Registration(userFirstName, userLastName, userNickname, notiFirst, notiLast, notiNick,
-                           newUserFirstName, newUserLastName, newUserNickname, wasNext, setWasNext) {
+function Name_Registration(userFirstName, userLastName, notiFirst, notiLast,
+                           newUserFirstName, newUserLastName, wasNext, setWasNext) {
 
 
     return (
@@ -46,27 +46,6 @@ function Name_Registration(userFirstName, userLastName, userNickname, notiFirst,
                 </div>
             </div>
             <div className="nameNotification">{notiLast}</div>
-
-            {/*<div className="textFiledR">*/}
-            <div className="titlesR mb-2">Username</div>
-            <div id="nicknameDivR">
-                <UserInput
-                    icon={"bi bi-person"}
-                    type={"text"}
-                    text={"Username"}
-                    label={"Nickname"}
-                    wasNext={wasNext}
-                    reference={userNickname}
-                    setWasNext={setWasNext}
-                    state={newUserNickname}
-                    // onChange={(e) => (userFirstName  = e.target.value) }
-                />
-            </div>
-            {/*</div>*/}
-            <div className="nameNotification">{notiNick}</div>
-
-
-            {/*<button type="button" className="btn btn-secondary m-0" data-step-next>Next</button>*/}
 
         </div>
     );

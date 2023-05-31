@@ -22,14 +22,14 @@ function validate(password) {
     return true;
 }
 
-function Password_Validation(passwordVal, confirnPassword) {
+function Password_Validation(passwordVal, confirnPassword, userNickname, notiNick) {
 
     if (!(validate(passwordVal.current.value))) {
         // event.preventDefault();
         return 1;
     } else if (passwordVal.current.value !== confirnPassword.current.value) {
         // event.preventDefault();
-        alert("Passwords don't match!");
+        // alert("Passwords don't match!");
         return 1;
     }
     return 0;

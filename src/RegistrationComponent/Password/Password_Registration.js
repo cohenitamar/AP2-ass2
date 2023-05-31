@@ -4,7 +4,7 @@ import UserInput from "../UserInput/UserInput";
 import React, {useRef, useState} from "react";
 import Password_Rules from "./Password_Rules";
 
-function Password_Registration(passwordVal, confirnPassword, notiPassword) {
+function Password_Registration(passwordVal, confirnPassword, notiPassword, notiNick, userNickname, newUserNickname) {
     let password = "";
     let confirmPassword = "";
 
@@ -48,8 +48,28 @@ function Password_Registration(passwordVal, confirnPassword, notiPassword) {
 
 
     return (
+
+
         <div className="textFiledR">
+            {/*<div className="textFiledR">*/}
+            <div className="titlesR mb-2">Username</div>
+            <div id="nicknameDivR">
+                <UserInput
+                    icon={"bi bi-person"}
+                    type={"text"}
+                    text={"Username"}
+                    label={"Nickname"}
+                    reference={userNickname}
+                    state={newUserNickname}
+                    // onChange={(e) => (userFirstName  = e.target.value) }
+                />
+            </div>
+            {/*</div>*/}
+            <div className="nameNotification">{notiNick}</div>
+
+
             <div className="titlesR mt-2"> Password</div>
+            <div id="passwordDivR">
             <UserInput
                 icon={"bi bi-lock"}
                 type={"password"}
@@ -58,10 +78,12 @@ function Password_Registration(passwordVal, confirnPassword, notiPassword) {
                 func={handleFunc}
                 reference={passwordVal}
             />
+            </div>
             <br/>
 
             <div className="titlesR mt-2"> Confirm Password</div>
             <div id="conDivR" className="flex-grow-1">
+                <div id="confirmDivR">
                 <UserInput
                     icon={"bi bi-lock"}
                     type={"password"}
@@ -71,6 +93,7 @@ function Password_Registration(passwordVal, confirnPassword, notiPassword) {
                     func={handleConfirm}
                     reference={confirnPassword}
                 />
+                </div>
             </div>
             <div className="nameNotification">{notiPassword}</div>
 

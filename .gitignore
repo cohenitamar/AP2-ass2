@@ -12,7 +12,8 @@ ReactJS/coverage
 
 # production
 ReactJS/build
-
+NodeJS/.idea
+.idea/
 # misc
 ReactJS/.DS_Store
 ReactJS/.env.local

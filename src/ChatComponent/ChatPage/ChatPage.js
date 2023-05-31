@@ -30,8 +30,23 @@ function ChatPage({username, token}) {
         return res.text();
     }
 
-    useEffect(() => {
 
+    const API_getChatsByID = async (id) => {
+        const res = await fetch(`http://localhost:5000/api/Chats/${id}`, {
+            'method': 'get',
+            'headers': {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            }
+        })
+        if (res.ok) {
+            return res.text();
+        }
+        return false;
+    }
+
+
+    useEffect(() => {
         API_getChats().then(data => {
             const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
             setContacts(newData);
@@ -45,11 +60,12 @@ function ChatPage({username, token}) {
         <div className="row h-100">
             <ContactScreen username={username} doSearch={doSearch} setContacts={setContacts} setFilter={setFilter}
                            contacts={contacts} setMessage={setMessage} setContactOnChat={setContactOnChat}
-                           filters={filters} token={token} API_getChats={API_getChats}/>
+                           filters={filters} token={token} API_getChats={API_getChats}
+                           API_getChatsByID={API_getChatsByID}/>
             <ChatScreen username={username} contacts={contacts} token={token} setMessage={setMessage}
                         contactOnChat={contactOnChat} message={message}
                         setFilter={setFilter} setContacts={setContacts}
-                        API_getChats={API_getChats}/>
+                        API_getChats={API_getChats} API_getChatsByID={API_getChatsByID}/>
         </div>
     </div>);
 }

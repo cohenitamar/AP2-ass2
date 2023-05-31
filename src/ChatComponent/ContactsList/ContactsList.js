@@ -3,7 +3,7 @@ import {useState} from "react";
 import Adapters from "../../Adapters"
 import messageDatabase from "../Message/MessageDatabase";
 
-function ContactList({contacts, setContactOnChat, setMessage, token}) {
+function ContactList({contacts, setContactOnChat, setMessage, token, API_getChatsByID}) {
 
     const [activeContact, setActiveContact] = useState(null);
 
@@ -21,21 +21,8 @@ function ContactList({contacts, setContactOnChat, setMessage, token}) {
     }
 
 
-    const API_getChatsByID = async (id) => {
-        const res = await fetch(`http://localhost:5000/api/Chats/${id}`, {
-            'method': 'get',
-            'headers': {
-                'Content-Type': 'application/json',
-                'Authorization': token
-            }
-        })
-        if (res.ok) {
-            return res.text();
-        }
-        return false;
 
 
-    }
     const contactsList = contacts.map((contact, key) => {
         return <Contact {...contact} key={key} isActive={contact["username"] === activeContact}
                         onContactClick={handleContactClick}/>

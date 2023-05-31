@@ -2,7 +2,8 @@ import {useRef} from "react";
 import messageDatabase from "../Message/MessageDatabase";
 import Adapters from "../../Adapters";
 
-function MessageInputBar({setMessage, contactOnChat, setContacts, setFilter, username, token, API_getChats}) {
+function MessageInputBar({setMessage, contactOnChat, setContacts, setFilter, username, token,
+                             API_getChats, API_getChatsByID}) {
     const inputRef = useRef(null);
 
     const handleAddMessage = () => {
@@ -12,9 +13,16 @@ function MessageInputBar({setMessage, contactOnChat, setContacts, setFilter, use
         }
         API_postMessages().then(data => {
             const newMessage= Adapters.ADAPTER_sendMessage(JSON.parse(data));
-            console.log(newMessage);
-            ///TODO WE WANT TO DO GETMESSAGE
-            setMessage((prev) =>  [...prev, newMessage]);
+            console.log(contactOnChat["id"]);
+            API_getChatsByID(contactOnChat["id"]).then(data => {
+                if (data) {
+                    const msg = JSON.parse(data);
+                    const message = Adapters.ADAPTER_messageList(msg);
+                    setMessage(message);
+                    console.log(message)
+                }
+            });
+            //setMessage((prev) =>  [...prev, newMessage]);
             API_getChats().then(data => {
                 const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
                 console.log(newData)

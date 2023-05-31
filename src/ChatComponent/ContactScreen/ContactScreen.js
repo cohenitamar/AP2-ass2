@@ -6,7 +6,7 @@ import React, {useRef} from "react";
 
 
 function ContactScreen({username, doSearch, setContacts ,token, setFilter, contacts, setMessage,
-                           setContactOnChat, filters,API_getChats}) {
+                           setContactOnChat, filters,API_getChats, API_getChatsByID}) {
     const searchBox = useRef("");
 
     return (
@@ -16,7 +16,8 @@ function ContactScreen({username, doSearch, setContacts ,token, setFilter, conta
                         filterUpdate={setFilter} contactsList={contacts} searchBox={searchBox} API_getChats = {API_getChats}/>
                 <Search doSearch={doSearch} searchBox={searchBox}/>
                 <ContactList contacts={filters}
-                             setContactOnChat = {setContactOnChat} setMessage={setMessage} token = {token}/>
+                             setContactOnChat = {setContactOnChat} setMessage={setMessage} token={token}
+                             API_getChatsByID={API_getChatsByID}/>
                 <Logout/>
             </div>
         </div>

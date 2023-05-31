@@ -1,7 +1,9 @@
 import {useRef} from "react";
 import messageDatabase from "../Message/MessageDatabase";
+import Adapters from "../../Adapters";
 
-function MessageInputBar({setMessage, contactOnChat, contacts}) {
+function MessageInputBar({setMessage, contactOnChat, setContacts, setFilter, username, token,
+                             API_getChats, API_getChatsByID}) {
     const inputRef = useRef(null);
 
     const handleAddMessage = () => {
@@ -9,23 +11,57 @@ function MessageInputBar({setMessage, contactOnChat, contacts}) {
         if (refName.length === 0 || !contactOnChat.name) {
             return;
         }
-        const newMessage = {
-            message: refName,
-            pic: contactOnChat.pic,
-            me: true,
-            date: new Date().toLocaleString()
-        };
-        setMessage((prev) =>
-            messageDatabase[contactOnChat.name] = [...prev, newMessage]);
-        inputRef.current.value = '';
-        for (let i = 0; i < contacts.length; i++) {
-            if (contacts[i].name === contactOnChat.name) {
-                contacts[i].lastMessage = refName
-                contacts[i].date = newMessage.date
-                break;
-            }
-        }
+        API_postMessages().then(data => {
+            const newMessage= Adapters.ADAPTER_sendMessage(JSON.parse(data));
+            console.log(contactOnChat["id"]);
+            API_getChatsByID(contactOnChat["id"]).then(data => {
+                if (data) {
+                    const msg = JSON.parse(data);
+                    const message = Adapters.ADAPTER_messageList(msg);
+                    setMessage(message);
+                    console.log(message)
+                }
+            });
+            //setMessage((prev) =>  [...prev, newMessage]);
+            API_getChats().then(data => {
+                const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
+                console.log(newData)
+                setContacts(newData);
+                setFilter(newData);
+
+            });
+        })
+       inputRef.current.value = '';
+
+        /*    for (let i = 0; i < contacts.length; i++) {
+               if (contacts[i].name === contactOnChat.name) {
+                   contacts[i].lastMessage = refName
+                   contacts[i].date = newMessage.date
+                   break;
+               }
+           }*/
     }
+
+    const API_postMessages = async () => {
+        const data = {
+            msg: inputRef.current.value.trim()
+        }
+        const res = await fetch(`http://localhost:5000/api/Chats/${contactOnChat.id}/Messages`, {
+            'method': 'post',
+            'headers': {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+
+            'body': JSON.stringify(data)
+
+        })
+        if (res.ok) {
+            return res.text();
+        }
+        return false;
+    }
+
 
     function handleKeyPress(e) {
         if (e.key === 'Enter') {

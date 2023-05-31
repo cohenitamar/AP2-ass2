@@ -1,4 +1,4 @@
-function Contact({pic, name, lastMessage, date, onContactClick, isActive}) {
+function Contact({id, username, name,  pic, lastMessage, date, onContactClick, isActive}) {
 
 
 
@@ -6,7 +6,7 @@ function Contact({pic, name, lastMessage, date, onContactClick, isActive}) {
     rounded-0 fs-6 fw-bold ${isActive ? "active" : ""}`;
     return (<button
         onClick={() => {
-            onContactClick(pic, name, lastMessage, date)
+            onContactClick(id, pic, username, name, lastMessage, date)
         }}
         className={className}
     >

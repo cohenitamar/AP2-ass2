@@ -48,12 +48,12 @@ function Name_Registration(userFirstName, userLastName, userNickname, notiFirst,
             <div className="nameNotification">{notiLast}</div>
 
             {/*<div className="textFiledR">*/}
-            <div className="titlesR mb-2">Nickname</div>
+            <div className="titlesR mb-2">Username</div>
             <div id="nicknameDivR">
                 <UserInput
                     icon={"bi bi-person"}
                     type={"text"}
-                    text={"Nickname"}
+                    text={"Username"}
                     label={"Nickname"}
                     wasNext={wasNext}
                     reference={userNickname}

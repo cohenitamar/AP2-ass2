@@ -42,7 +42,7 @@ function InputVal({inputType, iconType, inputRef, func, innerIcon1,innerIcon2,un
         </span>
                 <span className= "check d-none" ref ={checkPassword}>
                     <i className="bi bi-exclamation-circle me-1"></i>
-                    Invalid password.
+                    Invalid Username\Password.
                     </span>
 
             </>

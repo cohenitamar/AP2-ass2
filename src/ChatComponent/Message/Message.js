@@ -1,15 +1,15 @@
 
 
-function Message({message, date, pic,me}) {
+function Message({message, date, pic,me, username}) {
 
 
-    if (me === true) {
+    if (me === username) {
 
         return (
             <div className="list-group-item d-flex flex-row bg-transparent border-0 p-0 justify-content-start">
                 <img
                     className="profile-image m-1 p-0"
-                    src={pic}
+                    src={pic[me]}
                     alt=""
                 />
                 <div className="text-break">
@@ -35,7 +35,7 @@ function Message({message, date, pic,me}) {
                         {date}
                     </p>
                 </div>
-                <img className="profile-image m-1 p-0" alt="" src={pic}/>
+                <img className="profile-image m-1 p-0" alt="" src={pic[me]}/>
             </div>
 
         );

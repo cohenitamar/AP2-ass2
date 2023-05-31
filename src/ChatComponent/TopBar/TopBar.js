@@ -4,7 +4,7 @@ import ContactModal from "../AddContact/ContactModal";
 import React from 'react';
 
 
-function TopBar({onAddContact ,filterUpdate , contactsList, username, searchBox, token}){
+function TopBar({onAddContact ,filterUpdate , contactsList, username, searchBox, token,API_getChats}){
 
 
     return (
@@ -12,7 +12,8 @@ function TopBar({onAddContact ,filterUpdate , contactsList, username, searchBox,
         <Profile username={username} token={token} />
         <AddContact/>
             <ContactModal onAddContact={onAddContact}
-                          filterUpdate={filterUpdate} contactsList= {contactsList} searchBox={searchBox}/>
+                          filterUpdate={filterUpdate} contactsList= {contactsList} searchBox={searchBox}
+                          token={token} API_getChats = {API_getChats}/>
         </span>
     );
 }

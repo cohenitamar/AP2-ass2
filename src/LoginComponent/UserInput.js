@@ -4,10 +4,11 @@ import InputVal from "./InputVal";
 import Vcheck from "./Vcheck";
 import LoginButton from "./LoginButton";
 import accountsDatabase from "./AccountsDatabase";
+import {useNavigate} from "react-router-dom";
 
 
 function UserInput({u1, u2, setUsername, setToken}) {
-
+    const navigate = useNavigate();
 
     const userInput = useRef(null);
     const password = useRef(null);
@@ -31,29 +32,22 @@ function UserInput({u1, u2, setUsername, setToken}) {
         password.current.type = 'password';
     }
 
-    function handleClick(event) {
-        foo();
-        buttonDiv.current.classList.add("LoginButton2");
-        checkPassword.current.classList.add("d-none");
-        checkUser.current.classList.add("d-none");
-        if (!(userInput.current.value in accountsDatabase)) {
-            userInput.current.value = "";
-            password.current.value = "";
-            checkUser.current.classList.remove("d-none");
-            event.preventDefault();
-            return;
-        }
-        console.log(accountsDatabase[userInput.current.value]['password']);
-        if (!(password.current.value === accountsDatabase[userInput.current.value]['password'])) {
-            event.preventDefault();
-            checkPassword.current.classList.remove("d-none");
-        }
-        setUsername(userInput.current.value);
-
-
-        userInput.current.value = "";
-        password.current.value = "";
+    async function handleClick(event) {
+        foo().then(data => {
+                if (data) {
+                    navigate("/chat")
+                    setUsername(userInput.current.value);
+                    userInput.current.value = "";
+                    password.current.value = "";
+                } else {
+                    buttonDiv.current.classList.add("LoginButton2");
+                    checkPassword.current.classList.add("d-none");
+                    checkPassword.current.classList.remove("d-none");
+                }
+            }
+        )
     }
+
 
     function handleKeyPress(event) {
         if (event.key === "Enter") {
@@ -74,9 +68,10 @@ function UserInput({u1, u2, setUsername, setToken}) {
             'body': JSON.stringify(data)
         })
         if (res.ok) {
-            setToken(await res.text());
-        } else
-            console.log("ZBI")
+            setToken("Bearer " + await res.text());
+            return true;
+        }
+        return false;
     }
 
     return (
@@ -90,7 +85,7 @@ function UserInput({u1, u2, setUsername, setToken}) {
                       innerIcon1="bi bi-eye iconPassword" innerIcon2="bi bi-eye-slash iconPassword"
                       checkPassword={checkPassword}
                       seen={seen} unseen={unseen} toSee={toSee} toHide={toHide}/>
-            <p className="forget text-decoration-underline">
+            <p className="forget text-decoration-underline mt-1">
                 Forgot Password?
             </p>
             <Vcheck/>

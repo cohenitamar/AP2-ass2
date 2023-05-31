@@ -64,7 +64,6 @@ function RegisterComponent() {
             },
             'body': JSON.stringify(data)
         })
-        console.log(res)
     }
 
     function checkAndChange(element, id, setNotification) {
@@ -108,7 +107,7 @@ function RegisterComponent() {
 
             if (isPasswordValid === 0) {
                 setNewUserPassword(newUserPassword || "");
-                  handleClick();
+                handleClick();
                 setCurrentStep((prevStep) => prevStep + 1);
             } else {
                 setNotPassword("* Invalid password");
@@ -138,9 +137,9 @@ function RegisterComponent() {
                                 <div className="bi bi-question-circle-fill"
                                      data-bs-toggle="tooltip"
                                      data-bs-placement="left"
-                                     ///TODO need to make a condition like
+                                    ///TODO need to make a condition like
                                     ///TODO {condition === state ? showRules : unshowRules}
-                                    onClick={showRules}>
+                                     onClick={showRules}>
                                     <span className="tooltip-logo"></span> What is a valid password?
                                 </div>
                             </div>
@@ -198,7 +197,7 @@ function RegisterComponent() {
                 }
                 {currentStep <= 3 && (
                     <div>
-                        <UploadPic setPic={setImageSrc} image={imageSrc}/></div>)
+                        <UploadPic setPic={setImageSrc} image={imageSrc} currentLevel={currentStep}/></div>)
                 }
 
                 {showStep()}

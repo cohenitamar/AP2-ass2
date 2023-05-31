@@ -3,8 +3,8 @@ import React, {useRef} from "react";
 import accountsDatabase from "../../LoginComponent/AccountsDatabase";
 function MessagesList({message, username}){
 
-   const messages = Array.from(message).map((message, key) => {
-        return <Message {...message} key={key} pic={message.me ? accountsDatabase[username]['pic'] : ""}/>
+   const messages = message.map((msg, key) => {
+        return <Message {...msg} key={key} username ={username}/>
     });
 
     const chatBox = useRef(null);

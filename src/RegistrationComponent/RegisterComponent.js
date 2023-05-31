@@ -2,7 +2,6 @@ import './register.css'
 import '../shared_background.jpg'
 import UploadPic from "./UploadPic/UploadPic";
 import React, {useRef, useState} from 'react';
-import user from "./UploadPic/user.png";
 import Name_Registration from "./Name/Name_Registration";
 import Password_Registration from "./Password/Password_Registration";
 import Name_Validation from "./Name/Name_Validation";
@@ -11,6 +10,8 @@ import Password_Rules from "./Password/Password_Rules";
 import {Link} from "react-router-dom";
 import accountsDatabase from "../LoginComponent/AccountsDatabase";
 import easter from "./UploadPic/easter_egg.png";
+import Nickname_Validation from "./Name/Nickname_Validation";
+import noPictureUserr from "./UploadPic/noPictureUserr.png"
 
 
 function RegisterComponent() {
@@ -29,7 +30,7 @@ function RegisterComponent() {
     const [wasNext, setWasNext] = useState(0);
 
 
-    const [imageSrc, setImageSrc] = useState(user);
+    const [imageSrc, setImageSrc] = useState(noPictureUserr);
     const [currentStep, setCurrentStep] = useState(1);
     const [notiFirst, setNotiFirst] = useState(<br/>);
     const [notiLast, setNotiLast] = useState(<br/>);
@@ -40,23 +41,25 @@ function RegisterComponent() {
     const [showPasswordRules, setShowPasswordRules] = useState(null);
 
     function handleClick(event) {
-        foo()
-        accountsDatabase[newUserNickname] = {
-            password: passwordVal.current.value,
-            first_name: newUserFirstName, last_name: newUserLastName,
-            pic: !imageSrc.startsWith("data:image/") || imageSrc === "/static/media/user.4eddcc79e0488c03d196.png" ?
-                easter : imageSrc
-        }
+        foo().then(data => {
+            if(data){
+                setNotiNick(<br/>);
+                setCurrentStep(currentStep +1);
+            } else{
+                setNotiNick("* User already exists");
+            }
+        })
     }
 
     const foo = async () => {
         const data = {
-            username: newUserNickname,
+            username: userNickname.current.value,
             password: passwordVal.current.value,
             displayName: newUserFirstName + " " + newUserLastName,
             profilePic: !imageSrc.startsWith("data:image/") || imageSrc === "/static/media/user.4eddcc79e0488c03d196.png" ?
                 easter : imageSrc
         }
+        console.log(data)
         const res = await fetch('http://localhost:5000/api/Users', {
             'method': 'post',
             'headers': {
@@ -64,6 +67,8 @@ function RegisterComponent() {
             },
             'body': JSON.stringify(data)
         })
+        //returns true or false
+        return res.ok;
     }
 
     function checkAndChange(element, id, setNotification) {
@@ -81,40 +86,66 @@ function RegisterComponent() {
         }
     }
 
-    function changeNameColor(firstName, lastName, nickname) {
+    function changeNameColor(firstName, lastName) {
         checkAndChange(firstName, "firstNameDivR", setNotiFirst);
         checkAndChange(lastName, "lastNameDivR", setNotiLast);
-        checkAndChange(nickname, "nicknameDivR", setNotiNick);
     }
 
+    function changeColor(id) {
+        let elementBox = document.getElementById(id)
+        elementBox.classList.add("rounded-2");
+        elementBox.style.boxShadow = "0 0 0 0.15rem red"
+        elementBox.style.borderColor = "green";
+    }
+
+    function cancelColor(id, setNotification){
+            let elementBox = document.getElementById(id)
+            elementBox.classList.remove("rounded-2");
+            elementBox.style.boxShadow = "none";
+            setNotification(<br/>);
+        }
+
+    //TODO: ADD VALIDATION TO NICKNAME IN THE PASSWORD PAGE
     const handleNext = () => {
         let isNameValid = 1;
         let isPasswordValid = 1;
+        let isNickValid = 1;
         if (currentStep === 1) {
-            isNameValid = Name_Validation(userFirstName, userLastName, userNickname);
+            isNameValid = Name_Validation(userFirstName, userLastName);
             if (isNameValid === 0) {
-
                 setNewUserFirstName(userFirstName.current.value || "");
                 setNewUserLastName(userLastName.current.value || "");
-                setNewUserNickname(userNickname.current.value || "");
                 setCurrentStep((prevStep) => prevStep + 1);
-                changeNameColor(userFirstName, userLastName, userNickname);
+                changeNameColor(userFirstName, userLastName);
             } else {
-                changeNameColor(userFirstName, userLastName, userNickname);
+                changeNameColor(userFirstName, userLastName);
             }
         } else if (currentStep === 2) {
-            isPasswordValid = password_Validation(passwordVal, confirmPassword, notiPassword);
-
-            if (isPasswordValid === 0) {
-                setNewUserPassword(newUserPassword || "");
+            isPasswordValid = password_Validation(passwordVal, confirmPassword, notiPassword, userNickname, notiNick);
+            isNickValid = Nickname_Validation(userNickname);
+            if((isPasswordValid === 0) && (isNickValid === 0)){
+                setNewUserPassword(passwordVal.current.value || "");
+                // cancelColor("nickNameDivR", setNotiNick);
+                // cancelColor("confirmDivR", setNotPassword);
                 handleClick();
-                setCurrentStep((prevStep) => prevStep + 1);
-            } else {
-                setNotPassword("* Invalid password");
+                // setCurrentStep((prevStep) => prevStep + 1);
+            }else {
+                if(isNickValid === 1){
+                    changeColor("nicknameDivR", setNotiNick);
+                    setNotiNick("* Nickname needs to be at least 3 letters long");
+                }else{
+                    cancelColor("nicknameDivR", setNotiNick);
+                }
+                if(isPasswordValid === 1){
+                    changeColor("confirmDivR");
+                    setNotPassword("* Invalid password");
+                }else{
+                    cancelColor("confirmDivR", setNotPassword);
+                }
             }
         }
-
     };
+
     const handlePrevious = () => {
         setRules(false);
         setShowPasswordRules(null);
@@ -126,12 +157,12 @@ function RegisterComponent() {
     const showStep = () => {
         switch (currentStep) {
             case 1:
-                return Name_Registration(userFirstName, userLastName, userNickname, notiFirst, notiLast, notiNick,
-                    newUserFirstName, newUserLastName, newUserNickname, wasNext, setWasNext);
+                return Name_Registration(userFirstName, userLastName, notiFirst, notiLast,
+                    newUserFirstName, newUserLastName, wasNext, setWasNext);
             case 2:
                 return (
                     <>
-                        {Password_Registration(passwordVal, confirmPassword, notiPassword)}
+                        {Password_Registration(passwordVal, confirmPassword, notiPassword, notiNick, userNickname, newUserNickname)}
                         {
                             <div className="tooltipStyle">
                                 <div className="bi bi-question-circle-fill"
@@ -149,7 +180,7 @@ function RegisterComponent() {
             case 3:
 
                 return <div>
-                    <div> Thank you for joining us, {newUserNickname} !</div>
+                    <div> Thank you for joining us, {userNickname.current.value} !</div>
                     <Link to="/">
                         To Login
                     </Link>
@@ -213,6 +244,13 @@ function RegisterComponent() {
                                         onClick={handlePrevious}>
                                     Previous
                                 </button>
+                            </div>
+                        )}
+                        {currentStep === 1 && (
+                            <div className="col text-start mb-3">
+                                <Link type="button" to="/" className=" btn bi bi-arrow-left nextButt m-0 ">
+                                    Login
+                                </Link>
                             </div>
                         )}
                         {currentStep === 1 && (

@@ -1,5 +1,5 @@
 
-function Password_Rules() {
+function PasswordRules() {
         return (
             <div className="d-flex justify-content-bottom align-items-center">
                 <div className="validateR me-3 rounded-5">
@@ -28,4 +28,4 @@ function Password_Rules() {
         )
 }
 
-export default Password_Rules;
+export default PasswordRules;

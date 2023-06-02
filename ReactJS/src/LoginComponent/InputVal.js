@@ -1,6 +1,5 @@
 import React from 'react';
 import './login.css'
-import {  useEffect } from 'react';
 
 function InputVal({inputType, iconType, inputRef, func, innerIcon1,innerIcon2,unseen,seen,toHide,toSee ,checkUser,checkPassword}) {
 

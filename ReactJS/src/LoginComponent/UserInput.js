@@ -3,7 +3,7 @@ import './login.css'
 import InputVal from "./InputVal";
 import Vcheck from "./Vcheck";
 import LoginButton from "./LoginButton";
-import accountsDatabase from "./AccountsDatabase";
+
 import {useNavigate} from "react-router-dom";
 
 
@@ -85,10 +85,7 @@ function UserInput({u1, u2, setUsername, setToken}) {
                       innerIcon1="bi bi-eye iconPassword" innerIcon2="bi bi-eye-slash iconPassword"
                       checkPassword={checkPassword}
                       seen={seen} unseen={unseen} toSee={toSee} toHide={toHide}/>
-            <p className="forget text-decoration-underline mt-1">
-                Forgot Password?
-            </p>
-            <Vcheck/>
+
             <LoginButton handleClick={handleClick} reference={loginButton} classRef={buttonDiv}/>
         </div>
     );

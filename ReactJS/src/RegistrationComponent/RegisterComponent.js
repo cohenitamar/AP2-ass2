@@ -2,15 +2,15 @@ import './register.css'
 import '../shared_background.jpg'
 import UploadPic from "./UploadPic/UploadPic";
 import React, {useRef, useState} from 'react';
-import Name_Registration from "./Name/Name_Registration";
-import Password_Registration from "./Password/Password_Registration";
-import Name_Validation from "./Name/Name_Validation";
-import password_Validation from "./Password/Password_Validation";
-import Password_Rules from "./Password/Password_Rules";
+import NameRegistration from "./Name/NameRegistration";
+import PasswordRegistration from "./Password/PasswordRegistration";
+import NameValidation from "./Name/NameValidation";
+import password_Validation from "./Password/PasswordValidation";
+import PasswordRules from "./Password/PasswordRules";
 import {Link} from "react-router-dom";
-import accountsDatabase from "../LoginComponent/AccountsDatabase";
+
 import easter from "./UploadPic/easter_egg.png";
-import Nickname_Validation from "./Name/Nickname_Validation";
+import Nickname_Validation from "./Name/NicknameValidation";
 import noPictureUserr from "./UploadPic/noPictureUserr.png"
 
 
@@ -111,7 +111,7 @@ function RegisterComponent() {
         let isPasswordValid = 1;
         let isNickValid = 1;
         if (currentStep === 1) {
-            isNameValid = Name_Validation(userFirstName, userLastName);
+            isNameValid = NameValidation(userFirstName, userLastName);
             if (isNameValid === 0) {
                 setNewUserFirstName(userFirstName.current.value || "");
                 setNewUserLastName(userLastName.current.value || "");
@@ -157,12 +157,12 @@ function RegisterComponent() {
     const showStep = () => {
         switch (currentStep) {
             case 1:
-                return Name_Registration(userFirstName, userLastName, notiFirst, notiLast,
+                return NameRegistration(userFirstName, userLastName, notiFirst, notiLast,
                     newUserFirstName, newUserLastName, wasNext, setWasNext);
             case 2:
                 return (
                     <>
-                        {Password_Registration(passwordVal, confirmPassword, notiPassword, notiNick, userNickname, newUserNickname)}
+                        {PasswordRegistration(passwordVal, confirmPassword, notiPassword, notiNick, userNickname, newUserNickname)}
                         {
                             <div className="tooltipStyle">
                                 <div className="bi bi-question-circle-fill"
@@ -194,7 +194,7 @@ function RegisterComponent() {
 
     function showRules() {
         setRules(!rules)
-        rules ? setShowPasswordRules(<Password_Rules/>) : setShowPasswordRules(null);
+        rules ? setShowPasswordRules(<PasswordRules/>) : setShowPasswordRules(null);
     }
 
 
@@ -220,7 +220,7 @@ function RegisterComponent() {
 
     return (
         <div className="d-flex justify-content-center align-items-center">
-            {/*{<Password_Rules ifToShow = {true}> </Password_Rules>}*/}
+            {/*{<PasswordRules ifToShow = {true}> </PasswordRules>}*/}
             {showPasswordRules}
             <div className="registerR rounded-5">
                 {currentStep < 3 && (

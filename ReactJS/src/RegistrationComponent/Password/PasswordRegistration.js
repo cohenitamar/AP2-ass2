@@ -1,10 +1,9 @@
 import '../register.css'
 import '../../shared_background.jpg'
 import UserInput from "../UserInput/UserInput";
-import React, {useRef, useState} from "react";
-import Password_Rules from "./Password_Rules";
+import React from "react";
 
-function Password_Registration(passwordVal, confirnPassword, notiPassword, notiNick, userNickname, newUserNickname) {
+function PasswordRegistration(passwordVal, confirnPassword, notiPassword, notiNick, userNickname, newUserNickname) {
     let password = "";
     let confirmPassword = "";
 
@@ -102,4 +101,4 @@ function Password_Registration(passwordVal, confirnPassword, notiPassword, notiN
     );
 }
 
-export default Password_Registration;
+export default PasswordRegistration;

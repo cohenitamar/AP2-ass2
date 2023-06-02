@@ -1,6 +1,5 @@
 import MessageInputBar from "../MessageInputBar/MessageInputBar";
 import MessagesList from "../MessagesList/MessagesList";
-import messageDatabase from "../Message/MessageDatabase";
 import empty from "../[images]/empty.png"
 
 function ChatScreen({setMessage, contactOnChat, setContacts, setFilter,

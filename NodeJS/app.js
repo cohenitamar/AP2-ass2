@@ -10,6 +10,7 @@ const key = "OriItamarTalKey"
 const mongoose = require('mongoose');
 const registerRouter = require('./routes/registerRoute');
 const loginRouter = require('./routes/loginRoutes')
+const chatsRouter = require('./routes/chatsRoutes')
 require ('custom-env').env(process.env.NODE_ENV,'./config');
 mongoose.connect(process.env.CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
 const site = (express.static('public'));
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 
 app.use('/api/Users',registerRouter);
 app.use('/api/Tokens', loginRouter);
+app.use('/api/Chats', chatsRouter);
 
 
 app.listen(process.env.Port)

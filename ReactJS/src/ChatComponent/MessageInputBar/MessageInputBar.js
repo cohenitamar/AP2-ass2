@@ -1,5 +1,4 @@
 import {useRef} from "react";
-import messageDatabase from "../Message/MessageDatabase";
 import Adapters from "../../Adapters";
 
 function MessageInputBar({setMessage, contactOnChat, setContacts, setFilter, username, token,
@@ -12,7 +11,9 @@ function MessageInputBar({setMessage, contactOnChat, setContacts, setFilter, use
             return;
         }
         API_postMessages().then(data => {
+/*
             const newMessage= Adapters.ADAPTER_sendMessage(JSON.parse(data));
+*/
             console.log(contactOnChat["id"]);
             API_getChatsByID(contactOnChat["id"]).then(data => {
                 if (data) {

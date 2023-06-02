@@ -1,5 +1,5 @@
 import '../register.css'
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 
 function UserInput({icon, type, text, label, func, reference, wasNext, setWasNext, state}) {
 

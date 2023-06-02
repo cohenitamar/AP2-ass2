@@ -11,7 +11,7 @@ const login = async(req,res) =>{
         res.send(token);
     }
     else{
-        return res.status(404).json("no valid user/password.");
+        return res.status(404).json("not valid user/password.");
     }
 }
 
@@ -25,6 +25,10 @@ const login = async(req,res) =>{
          if (!result) {
              return res.status(404).json("no user Found");
          } else {
+             console.log(req.params.username);
+             if(result.username !== req.params.username){
+                 return res.status(401).json("Unauthorized");
+             }
              const x = {username: result.username, displayName: result.username, profilePic: result.profilePic}
              return res.json(x);
          }

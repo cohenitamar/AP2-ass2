@@ -22,7 +22,7 @@ function validate(password) {
     return true;
 }
 
-function Password_Validation(passwordVal, confirnPassword, userNickname, notiNick) {
+function PasswordValidation(passwordVal, confirnPassword, userNickname, notiNick) {
 
     if (!(validate(passwordVal.current.value))) {
         // event.preventDefault();
@@ -35,6 +35,6 @@ function Password_Validation(passwordVal, confirnPassword, userNickname, notiNic
     return 0;
 }
 
-export default Password_Validation;
+export default PasswordValidation;
 
 

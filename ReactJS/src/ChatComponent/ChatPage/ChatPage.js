@@ -1,9 +1,9 @@
 import '../chat.css';
 import ChatScreen from "../ChatScreen/ChatScreen";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ContactScreen from "../ContactScreen/ContactScreen";
 import Adapters from "../../Adapters";
-import logout from "../Logout/Logout";
+
 function ChatPage({username, token}) {
     const [contacts, setContacts] = useState([]);
 

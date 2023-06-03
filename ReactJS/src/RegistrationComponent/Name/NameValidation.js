@@ -1,6 +1,6 @@
 
 
-function Name_Validation(userFirstName, userLastName, userNickname){
+function NameValidation(userFirstName, userLastName, userNickname){
     if (userFirstName.current.value === "" || userLastName.current.value === "") {
         // event.preventDefault();
         // alert("Please type your first and last name!");
@@ -9,4 +9,4 @@ function Name_Validation(userFirstName, userLastName, userNickname){
     return 0;
 }
 
-export default Name_Validation;
+export default NameValidation;

@@ -1,11 +1,11 @@
 import '../register.css'
 import '../../shared_background.jpg'
 import UserInput from "../UserInput/UserInput";
-import React, {useEffect, useRef} from "react";
+import React from "react";
 
 
-function Name_Registration(userFirstName, userLastName, notiFirst, notiLast,
-                           newUserFirstName, newUserLastName, wasNext, setWasNext) {
+function NameRegistration(userFirstName, userLastName, notiFirst, notiLast,
+                          newUserFirstName, newUserLastName, wasNext, setWasNext) {
 
 
     return (
@@ -23,7 +23,6 @@ function Name_Registration(userFirstName, userLastName, notiFirst, notiLast,
                         wasNext={wasNext}
                         setWasNext={setWasNext}
                         state={newUserFirstName}
-                        // onChange={(e) => (userFirstName  = e.target.value) }
                     />
                 </div>
             </div>
@@ -51,4 +50,4 @@ function Name_Registration(userFirstName, userLastName, notiFirst, notiLast,
     );
 }
 
-export default Name_Registration;
+export default NameRegistration;

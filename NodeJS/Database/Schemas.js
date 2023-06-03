@@ -20,6 +20,7 @@ const messageSchema = new mongoose.Schema({
     SenderUsername: { type: String, ref: 'User', required: true },
     Content: { type: String, required: true },
     ChatId: { type: mongoose.Schema.Types.ObjectId, ref: 'Chat', required: true },
+
 });
 
 const User = mongoose.model('User', userSchema);

@@ -1,7 +1,6 @@
 import ChatComponent from "./ChatComponent/ChatComponent";
 import LoginComponent from "./LoginComponent/LoginComponent";
 import RegisterComponent from "./RegistrationComponent/RegisterComponent";
-import RegisterPg2 from "./RegistrationComponent/RegisterPg2";
 
 import {BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom'
 import {useState, useEffect} from "react";
@@ -29,7 +28,6 @@ function App() {
                                                              element={<ChatComponent username={username} token={token}/>}/>}/>
                 <Route path={"/"} element={<LoginComponent setUsername={setUsername} setToken={setToken}/>}/>
                 <Route path="/register" element={<RegisterComponent/>}/>
-                <Route path="/register2" element={<RegisterPg2/>}/>
             </Routes>
         </BrowserRouter>
     );

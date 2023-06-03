@@ -1,5 +1,4 @@
 import '../register.css'
-import {useEffect, useState} from "react";
 
 
 function UploadPic({image, setPic, currentLevel}) {

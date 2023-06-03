@@ -1,4 +1,3 @@
-import accountsDatabase from "../../LoginComponent/AccountsDatabase";
 import {useEffect, useState} from "react";
 
 function Profile({username, token}) {
@@ -7,12 +6,7 @@ function Profile({username, token}) {
         "displayName": "",
         "profilePic": ""
     });
-    /// get user by username
-/*    {
-        "username": "string",
-        "displayName": "string",
-        "profilePic": "string"
-    }*/
+
 
     useEffect(() => {
     const foo = async () => {
@@ -24,7 +18,6 @@ function Profile({username, token}) {
             }
         })
         setUser(await res.json());
-        console.log(token)
     }
     foo();
     }, [username]);

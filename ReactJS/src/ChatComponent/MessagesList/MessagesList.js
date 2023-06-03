@@ -1,6 +1,5 @@
 import Message from "../Message/Message";
 import React, {useRef} from "react";
-import accountsDatabase from "../../LoginComponent/AccountsDatabase";
 function MessagesList({message, username}){
 
    const messages = message.map((msg, key) => {

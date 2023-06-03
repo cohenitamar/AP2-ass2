@@ -1,6 +1,4 @@
 import React, {useRef, useState} from 'react';
-import Avatars from "../[images]/[avatars]/Avatars";
-import easter from "../../RegistrationComponent/UploadPic/easter_egg.png";
 import Adapters from "../../Adapters";
 
 
@@ -10,7 +8,6 @@ function ContactModal({onAddContact, filterUpdate, contactsList, searchBox, toke
 
     const inputRef = useRef(null);
     const handleAddContact = () => {
-        ///TODO API IS FUCKED UP! YOU CAN ADD THE SAME USER TWICE! FUCK HEMI! ADD TO MONGO-DB!
         API_postChats().then(contact => {
             if (inputRef.current.value.length === 0) {
                 setError(
@@ -28,8 +25,6 @@ function ContactModal({onAddContact, filterUpdate, contactsList, searchBox, toke
                 );
                 return;
             }
-            //console.log(JSON.parse(contact))
-            //const newContact = Adapters.ADAPTER_addContact(JSON.parse(contact));
             API_getChats().then(data => {
                 const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
                 onAddContact(newData);

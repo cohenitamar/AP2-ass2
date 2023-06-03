@@ -4,55 +4,108 @@ const Message = require("../models/Messages");
 const User = require("../models/Users")
 
 
-
 const postChats = async (req, res) => {
-
+    if (!req.body.username) {
+        return res.status(400).json("Bad Request");
+    }
     if (req.headers.authorization) {
         const token = req.headers.authorization.split(" ")[1];
-        const data = jwt.verify(token, "OriItamarTalKey");
+        var data;
+        try {
+            data = jwt.verify(token, "OriItamarTalKey");
+        } catch (error) {
+            return res.status(401).json("Unauthorized");
+        }
         let x = await chatsService.postChats(req.body.username, data.username);
+        if (x === -1) {
+            return res.status(400).json("No such user");
+        }
         if (x) {
             res.send(x);
         } else {
-            return res.status(404).json("Didn't add chat");
+            return res.status(404).json("error");
         }
+    } else {
+        return res.status(400).json("Bad Request");
     }
 }
 
 const getChats = async (req, res) => {
     if (req.headers.authorization) {
         const token = req.headers.authorization.split(" ")[1];
-        const data = jwt.verify(token, "OriItamarTalKey");
+        var data;
+        try {
+            data = jwt.verify(token, "OriItamarTalKey");
+        } catch (error) {
+            return res.status(401).json("Unauthorized");
+        }
         let x = await chatsService.getChats(data.username);
+        if (!x) {
+            return res.status(404).json("error");
+        }
         res.send(x);
+    } else {
+        return res.status(400).json("Bad Request");
     }
 }
 
 const getMessagesById = async (req, res) => {
+    if (!req.params.id) {
+        return res.status(400).json("Bad Request");
+    }
     if (req.headers.authorization) {
         const token = req.headers.authorization.split(" ")[1];
-        const data = jwt.verify(token, "OriItamarTalKey")
+        var data;
+        try {
+            data = jwt.verify(token, "OriItamarTalKey")
+        } catch (error) {
+            return res.status(401).json("Unauthorized");
+        }
         var x = await chatsService.getMessagesById(req.params.id, data.username);
-        res.send(x);
+        if (!x) {
+            return res.status(404).json("error");
+        } else if (x === -1) {
+            return res.status(401).json("Unauthorized");
+        } else {
+            res.send(x);
+        }
+    } else {
+        return res.status(400).json("Bad Request");
     }
 }
 
 
 const sendMessage = async (req, res) => {
+    if (!req.params.id) {
+        return res.status(400).json("Bad Request");
+    }
+    if (!req.body.msg) {
+        return res.status(400).json("Bad Request");
+    }
     if (req.headers.authorization) {
         const token = req.headers.authorization.split(" ")[1];
-        const data = jwt.verify(token, "OriItamarTalKey")
-        const user = data.username;
-        console.log(user);
+        var user;
+        var data;
+        try {
+            const token = req.headers.authorization.split(" ")[1];
+            data = jwt.verify(token, "OriItamarTalKey")
+            user = data.username;
+        } catch (error) {
+            return res.status(401).json("Unauthorized");
+        }
         const message = req.body.msg;
-        console.log(message);
         const id = req.params.id;
+        console.log(user);
         const sent = await chatsService.sendMessage(user, message, id);
         if (!sent) {
+            return res.status(401).json("Unauthorized");
+        }
+        var myUser;
+        try {
+            myUser = await User.findOne({username: data.username})
+        } catch (error) {
             return res.status(404).json("error");
         }
-        const myUser = await User.findOne({username: data.username})
-        delete myUser.password;
         const x = {
             id: sent._id,
             created: sent.created,
@@ -65,25 +118,62 @@ const sendMessage = async (req, res) => {
         }
         res.send(x);
 
+    } else {
+        return res.status(400).json("Bad Request");
     }
 }
 
 
 const getOnlyMessages = async (req, res) => {
+    var username;
+    if (!req.params.id) {
+        return res.status(400).json("Bad Request");
+    }
     if (req.headers.authorization) {
-        const token = req.headers.authorization.split(" ")[1];
-        const data = jwt.verify(token, "OriItamarTalKey")
-        const user = data.username;
+        try {
+            const token = req.headers.authorization.split(" ")[1];
+            const data = jwt.verify(token, "OriItamarTalKey");
+            username = data.username;
+        } catch (error) {
+            return res.status(401).json("Unauthorized");
+        }
         const id = req.params.id;
-        //TODO CHANGE CREATED
-        const sent = await chatsService.getOnlyMessages(id);
+        const sent = await chatsService.getOnlyMessages(id, username);
         if (!sent) {
-            return res.status(404).json("error");
+            return res.status(401).json("Unauthorized");
         }
         res.send(sent);
+    } else {
+        return res.status(400).json("Bad Request");
     }
+}
 
+const deleteChatById = async (req, res) => {
+    var data;
+    if (!req.params.id) {
+        return res.status(400).json("Bad Request");
+    }
+    if (req.headers.authorization) {
+        try {
+            const token = req.headers.authorization.split(" ")[1];
+            data = jwt.verify(token, "OriItamarTalKey")
+        } catch (error) {
+            return res.status(401).json("Unauthorized");
+        }
+        const user = data.username;
+        const id = req.params.id;
+        const sent = await chatsService.deleteChatById(id, user);
+        if (!sent) {
+            return res.status(404).json("error");
+        } else if (sent === -1) {
+            return res.status(401).json("Unauthorized");
+        } else {
+            res.send(sent);
+        }
+    } else {
+        return res.status(400).json("Bad Request")
+    }
 }
 
 
-    module.exports = {postChats, getChats,sendMessage, getMessagesById,getOnlyMessages}
+module.exports = {postChats, getChats, sendMessage, getMessagesById, getOnlyMessages, deleteChatById}

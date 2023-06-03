@@ -128,6 +128,23 @@
         return false;
     }
 
+    const deleteChatByID = async () => {
+        const res = await fetch(`http://localhost:5000/api/Chats/${document.getElementsByTagName("input")[7].value}`, {
+            'method': 'delete',
+            'headers': {
+                'Content-Type': 'application/json',
+                'Authorization': document.getElementsByTagName("input")[4].value
+            }
+        })
+        if(res.status(204)) {
+            return "NO CONTENT";
+        }
+        if (res.ok) {
+            return "DELETED";
+        }
+        return false;
+    }
+
 </script>
 
 
@@ -164,6 +181,7 @@
 <br>
 <input type="text" placeholder="ID">
 <button onclick="getChatsByID()">Get Chat by ID</button>
+<button onclick="deleteChatByID()">Delete Chat by ID</button>
 <br>
 </body>
 </html>

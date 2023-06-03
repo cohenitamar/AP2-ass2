@@ -11,11 +11,10 @@ router.route('/')
 
 router.route('/:id')
     .get(chatsController.getMessagesById)
+    .delete(chatsController.deleteChatById);
 
 
 router.route('/:id/Messages')
-    // id = req.params.id
-    // text = req.body.msg
     .post(chatsController.sendMessage)
     .get(chatsController.getOnlyMessages);
 

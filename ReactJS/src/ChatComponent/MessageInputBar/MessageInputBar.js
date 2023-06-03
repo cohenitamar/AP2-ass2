@@ -21,16 +21,18 @@ function MessageInputBar({setMessage, contactOnChat, setContacts, setFilter, use
                     const message = Adapters.ADAPTER_messageList(msg);
                     setMessage(message);
                     console.log(message)
+                    API_getChats().then(data => {
+                        const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
+                        console.log(newData)
+                        setContacts(newData);
+                        setFilter(newData);
+
+                    });
                 }
-            });
-            //setMessage((prev) =>  [...prev, newMessage]);
-            API_getChats().then(data => {
-                const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
-                console.log(newData)
-                setContacts(newData);
-                setFilter(newData);
 
             });
+            //setMessage((prev) =>  [...prev, newMessage]);
+
         })
        inputRef.current.value = '';
 

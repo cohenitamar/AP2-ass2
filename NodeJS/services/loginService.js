@@ -2,7 +2,13 @@ const User = require('../models/Users');
 const jwt = require("jsonwebtoken");
 
 const login = async (username, password) => {
-    const user = await User.findOne({username: username, password: password});
+    var user;
+    try{
+        user = await User.findOne({username: username, password: password});
+    }
+    catch (error){
+        return false;
+    }
     if (user) {
         return true;
     } else {
@@ -14,8 +20,6 @@ const login = async (username, password) => {
 
 const getUser = async (token)=>{
     try {
-// Verify the token is va
-// lid
         const data = await jwt.verify(token, "OriItamarTalKey");
          return await User.findOne({username : data.username});
     }

@@ -350,6 +350,42 @@ const getMessagesById = async (id, username) => {
 
 
 const getOnlyMessages = async (id, username) => {
+    try {
+        const chat = await Chat.findById(id);
+        if (!chat) {
+            return false
+        }
+        if (username !== chat.users.at(0) && username !== chat.users.at(1)) {
+            return false;
+        }
+       var data = []
+        for (msg of chat.messages){
+            var newMsg = {
+                id : msg._id,
+                sender : {
+                    username : msg.sender
+                },
+                created:msg.created,
+                content:msg.content
+            }
+            data = [newMsg,...data]
+
+        }
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
+
+
+
+
+
+
+const getOnlyMessagess = async (id, username) => {
     var chatUser;
     try {
         chatUser = await ChatUser.findOne({ChatsId: id});

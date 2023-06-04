@@ -1,7 +1,6 @@
 import ChatComponent from "./ChatComponent/ChatComponent";
 import LoginComponent from "./LoginComponent/LoginComponent";
 import RegisterComponent from "./RegistrationComponent/RegisterComponent";
-
 import {BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom'
 import {useState, useEffect} from "react";
 
@@ -21,6 +20,8 @@ function ProtectedRoute({element, username}) {
 function App() {
     const [username, setUsername] = useState("");
     const [token, setToken] = useState("");
+
+
     return (
         <BrowserRouter>
             <Routes>

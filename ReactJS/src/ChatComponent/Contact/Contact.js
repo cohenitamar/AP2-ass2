@@ -1,4 +1,4 @@
-function Contact({id, username, name,  pic, lastMessage, date, onContactClick, isActive}) {
+function Contact({id, username, name,  pic, lastMessage, date, onContactClick, isActive, newBadge}) {
 
 
 
@@ -14,7 +14,7 @@ function Contact({id, username, name,  pic, lastMessage, date, onContactClick, i
             <span className="col-3">
                 <img src={pic} alt="" className="profile-image d-flex justify-content-center "/>
             </span>
-             <span className="col-6 ">
+             <span className="col-5 ">
                  <span className="row">
                      <small className="overflow-hidden fw-normal fw-bold text-center text-truncate">
                      {name}
@@ -31,6 +31,8 @@ function Contact({id, username, name,  pic, lastMessage, date, onContactClick, i
                      {date}
                  </small>
             </span>
+            {!isActive && newBadge[id]
+                ? <span className="badge col-1 text-bg-danger d-flex justify-content-center">New</span> : ""}
 
 
             </span>

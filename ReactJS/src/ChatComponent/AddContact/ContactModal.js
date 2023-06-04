@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import Adapters from "../../Adapters";
 
 
-function ContactModal({onAddContact, filterUpdate, contactsList, searchBox, token, API_getChats}) {
+function ContactModal({onAddContact, filterUpdate, contactsList, socket, searchBox, token, API_getChats}) {
 
     const [error, setError] = useState("");
 
@@ -23,13 +23,18 @@ function ContactModal({onAddContact, filterUpdate, contactsList, searchBox, toke
                         Invalid username.
                     </div>
                 );
-                return;
+                return
             }
+            contact = JSON.parse(contact)
+            socket.current.emit("add-contact",contact["user"][0]["username"]);
+
+
             API_getChats().then(data => {
                 const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
                 onAddContact(newData);
                 searchBox.current.value = "";
                 filterUpdate(newData);
+
             });
 
 

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-function Profile({username, token}) {
+function Profile({username, token, socket}) {
     const [user, setUser] = useState({
         "username": "",
         "displayName": "",

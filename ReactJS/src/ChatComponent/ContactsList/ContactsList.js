@@ -3,13 +3,20 @@ import {useState} from "react";
 import Adapters from "../../Adapters"
 
 
-function ContactList({contacts, setContactOnChat, setMessage, token, API_getChatsByID}) {
+function ContactList({contacts, setContactOnChat, setMessage, socket, token, API_getChatsByID, newBadge, setNewBadge}) {
 
     const [activeContact, setActiveContact] = useState(null);
+
 
     function handleContactClick(id, pic, username, name, lastMessage, date) {
         setContactOnChat({id, pic, username, name, lastMessage, date});
         setActiveContact(id);
+        setNewBadge(prev => {
+            const newState = {...prev};
+            newState[id] = false;
+            console.log(id)
+            return newState;
+        });
         API_getChatsByID(id).then(data => {
             if (data) {
                 const msg = JSON.parse(data);
@@ -21,7 +28,7 @@ function ContactList({contacts, setContactOnChat, setMessage, token, API_getChat
 
 
     const contactsList = contacts.map((contact, key) => {
-        return <Contact {...contact} key={key} isActive={contact["id"] === activeContact}
+        return <Contact {...contact} key={key} isActive={contact["id"] === activeContact} newBadge={newBadge}
                         onContactClick={handleContactClick}/>
     });
     return (

@@ -2,65 +2,90 @@ const Chat = require('../models/Chats').model;
 const User = require('../models/Users').model;
 const Message = require('../models/Messages').model;
 
-const postChats = async (usernameHim, usernameMe) => {
 
-    var user;
+// const postChats = async (usernameHim, usernameMe) => {
+//
+//     var user;
+//     try {
+//         user = await User.findOne({username: usernameHim});
+//     } catch (error) {
+//         return false;
+//     }
+//     // Check if user exists
+//     if (!user) {
+//         return -1;
+//     }
+//     var chat;
+//     // Create new Chat
+//     try {
+//         chat = new Chat();
+//         await chat.save();
+//     } catch (error) {
+//         return false;
+//     }
+//     try {
+//         // Create new ChatUser
+//         const chatUser1 = new ChatUser({
+//             ChatsId: chat._id,
+//             talkingTo: user.username,
+//             me: usernameMe
+//
+//         });
+//         await chatUser1.save();
+//
+//         const chatUser2 = new ChatUser({
+//             ChatsId: chat._id,
+//             me: user.username,
+//             talkingTo: usernameMe
+//
+//         });
+//         await chatUser2.save();
+//     } catch (error) {
+//         return false;
+//     }
+//     // Construct response
+//     return {
+//         id: chat._id,
+//         user: {
+//             username: user.username,
+//             displayName: user.displayName,
+//             profilePic: user.profilePic,
+//         }
+//     }
+// }
+
+
+const postChats = async (user1, user2) => {
     try {
-        user = await User.findOne({username: usernameHim});
-    } catch (error) {
-        return false;
-    }
-    // Check if user exists
-    if (!user) {
-        return -1;
-    }
-    var chat;
-    // Create new Chat
-    try {
-        chat = new Chat();
-        await chat.save();
-    } catch (error) {
-        return false;
-    }
-    try {
-        // Create new ChatUser
-        const chatUser1 = new ChatUser({
-            ChatsId: chat._id,
-            talkingTo: user.username,
-            me: usernameMe
-
-        });
-        await chatUser1.save();
-
-        const chatUser2 = new ChatUser({
-            ChatsId: chat._id,
-            me: user.username,
-            talkingTo: usernameMe
-
-        });
-        await chatUser2.save();
-    } catch (error) {
-        return false;
-    }
-    // Construct response
-    return {
-        id: chat._id,
-        user: {
-            username: user.username,
-            displayName: user.displayName,
-            profilePic: user.profilePic,
+        if (user1 === user2) {
+            return false
         }
-    }
-}
-const getChats = async (username) => {
-    var data = [];
-    var last;
-    var chatUsers;
-    // Fetch all chat IDs
-    try {
-        chatUsers = await ChatUser.find({me: username});
+
+        const u1 = await User.findOne({username: user1});
+        const u2 = await User.findOne({username: user2});
+        const sender1 = {
+            username: u1.username,
+            displayName: u1.displayName,
+            profilePic: u1.profilePic
+        }
+        const sender2 = {
+            username: u2.username,
+            displayName: u2.displayName,
+            profilePic: u2.profilePic
+        }
+        const newChat = new Chat({
+            users: [sender1.username, sender2.username],
+            messages: []
+        })
+
+        await newChat.save();
+        return await ({
+            id: newChat._id,
+            user: [sender1, sender2]
+
+        });
     } catch (error) {
-        return false;
+        return false
     }
 
 }
@@ -252,76 +277,76 @@ const getMessagesById = async (id, username) => {
 }
 
 
-const getMessagesById = async (id, username) => {
-    var messages;
-    var chatUser;
-    console.log(id);
-    try {
-        messages = await Messages.find({chatId: id});
-        chatUser = await ChatUser.find({ChatsId: id});
-    } catch (error) {
-        return false;
-    }
-    if (chatUser.length !== 0) {
-        if (username !== chatUser[0].me && username !== chatUser[0].talkingTo) {
-            return -1;
-        }
-    } else {
-        return false;
-    }
-    var users = [];
-    try {
-        var userX = await User.findOne({username: chatUser[0].me});
-        var userY = await User.findOne({username: chatUser[1].me});
-    } catch (error) {
-        return false;
-    }
-    var userXtrim = {
-        username: userX.username,
-        displayName: userX.displayName,
-        profilePic: userX.profilePic
-    }
-    var userYtrim = {
-        username: userY.username,
-        displayName: userY.displayName,
-        profilePic: userY.profilePic
-    }
-
-    if (username === chatUser[0].me) {
-        users = [...users, userXtrim];
-        users = [...users, userYtrim];
-    } else {
-        users = [...users, userYtrim];
-        users = [...users, userXtrim];
-    }
-    var messageseById = [];
-    for (let msg of messages) {
-        try {
-            var sender = await User.findOne({username: msg.senderUsername});
-        } catch (error) {
-            return false;
-        }
-        var senderTrim = {
-            username: sender.username,
-            displayName: sender.displayName,
-            profilePic: sender.profilePic
-        }
-        delete sender.password;
-        var newMsg = {
-            id: msg._id,
-            created: msg.created,
-            sender: senderTrim,
-            content: msg.content
-        }
-        messageseById = [...messageseById, newMsg];
-    }
-    var idArray = {
-        id: id,
-        users: users,
-        messages: messageseById
-    }
-    return idArray;
-}
+// const getMessagesById = async (id, username) => {
+//     var messages;
+//     var chatUser;
+//     console.log(id);
+//     try {
+//         messages = await Messages.find({chatId: id});
+//         chatUser = await ChatUser.find({ChatsId: id});
+//     } catch (error) {
+//         return false;
+//     }
+//     if (chatUser.length !== 0) {
+//         if (username !== chatUser[0].me && username !== chatUser[0].talkingTo) {
+//             return -1;
+//         }
+//     } else {
+//         return false;
+//     }
+//     var users = [];
+//     try {
+//         var userX = await User.findOne({username: chatUser[0].me});
+//         var userY = await User.findOne({username: chatUser[1].me});
+//     } catch (error) {
+//         return false;
+//     }
+//     var userXtrim = {
+//         username: userX.username,
+//         displayName: userX.displayName,
+//         profilePic: userX.profilePic
+//     }
+//     var userYtrim = {
+//         username: userY.username,
+//         displayName: userY.displayName,
+//         profilePic: userY.profilePic
+//     }
+//
+//     if (username === chatUser[0].me) {
+//         users = [...users, userXtrim];
+//         users = [...users, userYtrim];
+//     } else {
+//         users = [...users, userYtrim];
+//         users = [...users, userXtrim];
+//     }
+//     var messageseById = [];
+//     for (let msg of messages) {
+//         try {
+//             var sender = await User.findOne({username: msg.senderUsername});
+//         } catch (error) {
+//             return false;
+//         }
+//         var senderTrim = {
+//             username: sender.username,
+//             displayName: sender.displayName,
+//             profilePic: sender.profilePic
+//         }
+//         delete sender.password;
+//         var newMsg = {
+//             id: msg._id,
+//             created: msg.created,
+//             sender: senderTrim,
+//             content: msg.content
+//         }
+//         messageseById = [...messageseById, newMsg];
+//     }
+//     var idArray = {
+//         id: id,
+//         users: users,
+//         messages: messageseById
+//     }
+//     return idArray;
+// }
 
 
 const getOnlyMessages = async (id, username) => {

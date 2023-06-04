@@ -23,13 +23,18 @@ function ContactModal({onAddContact, filterUpdate, contactsList, socket, searchB
                         Invalid username.
                     </div>
                 );
-                return;
+                return
             }
+            contact = JSON.parse(contact)
+            socket.current.emit("add-contact",contact["user"][0]["username"]);
+
+
             API_getChats().then(data => {
                 const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
                 onAddContact(newData);
                 searchBox.current.value = "";
                 filterUpdate(newData);
+
             });
 
 

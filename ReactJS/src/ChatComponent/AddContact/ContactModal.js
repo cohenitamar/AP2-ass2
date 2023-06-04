@@ -2,7 +2,7 @@ import React, {useRef, useState} from 'react';
 import Adapters from "../../Adapters";
 
 
-function ContactModal({onAddContact, filterUpdate, contactsList, searchBox, token, API_getChats}) {
+function ContactModal({onAddContact, filterUpdate, contactsList, socket, searchBox, token, API_getChats}) {
 
     const [error, setError] = useState("");
 

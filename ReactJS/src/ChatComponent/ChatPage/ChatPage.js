@@ -1,19 +1,25 @@
 import '../chat.css';
 import ChatScreen from "../ChatScreen/ChatScreen";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import ContactScreen from "../ContactScreen/ContactScreen";
 import Adapters from "../../Adapters";
+import {io} from "socket.io-client";
 
 function ChatPage({username, token}) {
     const [contacts, setContacts] = useState([]);
 
     const [filters, setFilter] = useState(contacts);
 
-    const [contactOnChat,setContactOnChat] = useState({});
+    const [contactOnChat, setContactOnChat] = useState({});
 
     const [message, setMessage] = useState([]);
 
+    const [newMessage, setNewMessage] = useState(null);
 
+    const [newBadge, setNewBadge] = useState({});
+
+
+    const socket = useRef(null);
     const doSearch = function (q) {
         setFilter(contacts.filter(contact => contact.name.toLowerCase().includes(q.toLowerCase())));
 
@@ -47,22 +53,71 @@ function ChatPage({username, token}) {
 
 
     useEffect(() => {
+        if (isEmpty(contactOnChat)) {
+            return;
+        }
+        if (contactOnChat.id === newMessage.chatID) {
+            setNewBadge(prev => {
+                const newState = {...prev};
+                newState[newMessage['chatID']] = false;
+                console.log(newMessage['chatID'])
+                return newState;
+            });
+            setMessage([...message, newMessage.message]);
+        }
+    }, [newMessage]);
+
+
+        useEffect(() => {
+        socket.current = io('http://localhost:5000');
+
+        socket.current.emit("connecting", username);
+
+        socket.current.on("add-contact", () => {
+            API_getChats().then(data => {
+                const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
+                setContacts(newData);
+                setFilter(newData);
+            });
+        });
+        socket.current.on("receive-message", (msgFormat) => {
+            API_getChats().then(data => {
+                const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
+                setContacts(newData);
+                setFilter(newData);
+            });
+            console.log(msgFormat)
+            // find(user from contact)
+            setNewBadge(prev => {
+                const newState = {...prev};
+                console.log(msgFormat['chatID'])
+                newState[msgFormat['chatID']] = true
+                return newState;
+            });
+            setNewMessage(msgFormat);
+        });
+        socket.current.on("disconnect", () => {
+        });
         API_getChats().then(data => {
             const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
             setContacts(newData);
             setFilter(newData);
-
         });
     }, [username]);
 
 
+    function isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+
     return (<div className="container h-100">
         <div className="row h-100">
-            <ContactScreen username={username} doSearch={doSearch} setContacts={setContacts} setFilter={setFilter}
+            <ContactScreen username={username} doSearch={doSearch} socket={socket} setContacts={setContacts}
+                           setFilter={setFilter} setNewBadge={setNewBadge}
                            contacts={contacts} setMessage={setMessage} setContactOnChat={setContactOnChat}
-                           filters={filters} token={token} API_getChats={API_getChats}
+                           filters={filters} token={token} API_getChats={API_getChats} newBadge={newBadge}
                            API_getChatsByID={API_getChatsByID}/>
-            <ChatScreen username={username} contacts={contacts} token={token} setMessage={setMessage}
+            <ChatScreen username={username} contacts={contacts} socket={socket} token={token} setMessage={setMessage}
                         contactOnChat={contactOnChat} message={message}
                         setFilter={setFilter} setContacts={setContacts}
                         API_getChats={API_getChats} API_getChatsByID={API_getChatsByID}/>

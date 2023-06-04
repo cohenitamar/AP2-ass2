@@ -1,9 +1,10 @@
 import {useRef} from "react";
 import Adapters from "../../Adapters";
+import message from "../Message/Message";
 
 function MessageInputBar({
                              setMessage, contactOnChat, setContacts, setFilter, username, token,
-                             API_getChats, API_getChatsByID
+                             API_getChats, API_getChatsByID, socket
                          }) {
     const inputRef = useRef(null);
 
@@ -14,14 +15,21 @@ function MessageInputBar({
         }
         API_postMessages().then(data => {
             const newMessage = Adapters.ADAPTER_sendMessage(JSON.parse(data));
-                setMessage((prev) => [...prev, newMessage]);
+            setMessage((prev) => [...prev, newMessage]);
+            console.log(JSON.parse(data))
+            const fullMessage = {
+                chatID: contactOnChat.id,
+                message: newMessage,
+                receiverUsername : contactOnChat.username
+            }
+            socket.current.emit("receive-message",fullMessage);
             API_getChats().then(data => {
                 const newData = Adapters.ADAPTER_contactList(JSON.parse(data));
                 setContacts(newData);
                 setFilter(newData);
 
             });
-            //
+
 
         })
         inputRef.current.value = '';

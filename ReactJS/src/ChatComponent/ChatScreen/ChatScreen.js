@@ -2,7 +2,7 @@ import MessageInputBar from "../MessageInputBar/MessageInputBar";
 import MessagesList from "../MessagesList/MessagesList";
 import empty from "../[images]/empty.png"
 
-function ChatScreen({setMessage, contactOnChat, setContacts, setFilter,
+function ChatScreen({setMessage, contactOnChat, setContacts, setFilter, socket,
                         contacts, username, token, message, API_getChats, API_getChatsByID}) {
 
 
@@ -19,7 +19,7 @@ function ChatScreen({setMessage, contactOnChat, setContacts, setFilter,
                 <MessagesList username={username}
                               message={message}/>
                 {contactOnChat.name !== undefined ? <MessageInputBar
-                    API_getChats={API_getChats} username={username} contactOnChat={contactOnChat}
+                    API_getChats={API_getChats} socket={socket} username={username} contactOnChat={contactOnChat}
                     setContacts={setContacts} setMessage={setMessage} API_getChatsByID={API_getChatsByID}
                     setFilter={setFilter} contacts={contacts} token={token}/> : ""}
             </div>

@@ -25,7 +25,6 @@ function ADAPTER_addContact(data) {
         name: data["user"]["displayName"],
         pic: data["user"]["profilePic"],
         lastMessage: data["lastMessage"] === null ? "" : data["lastMessage"]["content"],
-        ///TODO IN MONGO WE WILL SAVE THE LAST MESSAGE DATE!
         date: data["lastMessage"] === null ? "" : formatDate(data["lastMessage"]["created"])
     }
 }
@@ -40,7 +39,6 @@ function ADAPTER_contactList(data) {
             name: contact["user"]["displayName"],
             pic: contact["user"]["profilePic"],
             lastMessage: contact["lastMessage"] === null ? "" : contact["lastMessage"]["content"],
-            ///TODO IN MONGO WE WILL SAVE THE LAST MESSAGE DATE!
             date: contact["lastMessage"] === null ? "" : formatDate(contact["lastMessage"]["created"]),
         };
         newData = [...newData, newContact];

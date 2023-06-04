@@ -67,15 +67,15 @@ function ADAPTER_messageList(data) {
 
 
 
-/*function ADAPTER_sendMessage(data){
+function ADAPTER_sendMessage(data){
     return {
         message : data["content"],
         pic : {[data["sender"]["username"]]:data["sender"]["profilePic"]},
         me : data["sender"]["username"],
         date: data === null ? "" : formatDate(data["created"]),
     };
-}*/
+}
 
 
-export default {ADAPTER_contactList, ADAPTER_addContact, ADAPTER_messageList};
+export default {ADAPTER_contactList, ADAPTER_addContact, ADAPTER_messageList, ADAPTER_sendMessage};
 

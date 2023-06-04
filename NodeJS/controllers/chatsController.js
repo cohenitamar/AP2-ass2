@@ -1,7 +1,7 @@
 const chatsService = require('../services/chatsService')
 const jwt = require("jsonwebtoken")
 const Message = require("../models/Messages");
-const User = require("../models/Users")
+const User = require("../models/Users").model;
 
 
 const postChats = async (req, res) => {
@@ -95,28 +95,12 @@ const sendMessage = async (req, res) => {
         }
         const message = req.body.msg;
         const id = req.params.id;
-        console.log(user);
+
         const sent = await chatsService.sendMessage(user, message, id);
         if (!sent) {
             return res.status(401).json("Unauthorized");
         }
-        var myUser;
-        try {
-            myUser = await User.findOne({username: data.username})
-        } catch (error) {
-            return res.status(404).json("error");
-        }
-        const x = {
-            id: sent._id,
-            created: sent.created,
-            sender: {
-                username: myUser.username,
-                displayName: myUser.displayName,
-                profilePic: myUser.profilePic
-            },
-            content: sent.content
-        }
-        res.send(x);
+        res.send(sent);
 
     } else {
         return res.status(400).json("Bad Request");

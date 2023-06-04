@@ -207,72 +207,20 @@ const getOnlyMessages = async (id, username) => {
 
 
 
-
-
-
-const getOnlyMessagess = async (id, username) => {
-    var chatUser;
-    try {
-        chatUser = await ChatUser.findOne({ChatsId: id});
-    } catch (error) {
-        return false;
-    }
-    if (!chatUser) {
-        return false;
-    }
-    if (username !== chatUser.me && username !== chatUser.talkingTo) {
-        return false;
-    }
-    var messageseById = [];
-    var messages
-    try {
-        messages = await Messages.find({chatId: id});
-    } catch (error) {
-        return messageseById
-    }
-    for (let msg of messages) {
-        var sender
-        try {
-            sender = await User.findOne({username: msg.senderUsername});
-        } catch (error) {
-            return false;
-        }
-        var senderTrim = {
-            username: sender.username,
-            displayName: sender.displayName,
-            profilePic: sender.profilePic
-        }
-        delete sender.password;
-        var newMsg = {
-            id: msg._id,
-            created: msg.created,
-            sender: senderTrim,
-            content: msg.content
-        }
-        messageseById = [newMsg, ...messageseById];
-    }
-    return messageseById;
-}
-
-
 const deleteChatById = async (id, username) => {
     var chatUser;
     try {
-        chatUser = await ChatUser.findOne({ChatsId: id});
+        chatUser = await Chat.findOne({_id: id});
     } catch (error) {
         return false;
     }
     if (!chatUser) {
         return false;
     }
-    if (username !== chatUser.me && username !== chatUser.talkingTo) {
+    if (username !== chatUser.users[0] && username !== chatUser.users[1]) {
         return -1;
     }
-
-
     try {
-        await Messages.deleteMany({chatId: id});
-        await ChatUser.deleteMany({ChatsId: id});
         await Chat.deleteOne({_id: id});
         return true;
     } catch (err) {

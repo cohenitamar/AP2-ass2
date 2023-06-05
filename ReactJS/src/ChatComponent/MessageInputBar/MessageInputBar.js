@@ -1,6 +1,5 @@
 import {useRef} from "react";
 import Adapters from "../../Adapters";
-import message from "../Message/Message";
 
 function MessageInputBar({
                              setMessage, contactOnChat, setContacts, setFilter, username, token,
@@ -16,7 +15,6 @@ function MessageInputBar({
         API_postMessages().then(data => {
             const newMessage = Adapters.ADAPTER_sendMessage(JSON.parse(data));
             setMessage((prev) => [...prev, newMessage]);
-            console.log(JSON.parse(data))
             const fullMessage = {
                 chatID: contactOnChat.id,
                 message: newMessage,
@@ -33,14 +31,6 @@ function MessageInputBar({
 
         })
         inputRef.current.value = '';
-
-        /*    for (let i = 0; i < contacts.length; i++) {
-               if (contacts[i].name === contactOnChat.name) {
-                   contacts[i].lastMessage = refName
-                   contacts[i].date = newMessage.date
-                   break;
-               }
-           }*/
     }
 
     const API_postMessages = async () => {

@@ -3,7 +3,7 @@ import '../../shared_background.jpg'
 import UserInput from "../UserInput/UserInput";
 import React from "react";
 
-function PasswordRegistration(passwordVal, confirnPassword, notiPassword, notiNick, userNickname, newUserNickname) {
+function PasswordRegistration(passwordVal, confirnPassword, notiPassword, notiNick, userNickname) {
     let password = "";
     let confirmPassword = "";
 
@@ -59,7 +59,6 @@ function PasswordRegistration(passwordVal, confirnPassword, notiPassword, notiNi
                     text={"Username"}
                     label={"Nickname"}
                     reference={userNickname}
-                    state={newUserNickname}
                     // onChange={(e) => (userFirstName  = e.target.value) }
                 />
             </div>

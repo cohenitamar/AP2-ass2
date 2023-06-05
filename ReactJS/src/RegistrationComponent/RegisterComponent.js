@@ -23,10 +23,8 @@ function RegisterComponent() {
     const [rules, setRules] = useState(false);
 
     // const [user, setUser] = useState({first: "",last: "", password: "", nick: "" });
-    const [newUserNickname, setNewUserNickname] = useState("");
     const [newUserFirstName, setNewUserFirstName] = useState("");
     const [newUserLastName, setNewUserLastName] = useState("");
-    const [newUserPassword, setNewUserPassword] = useState("");
     const [wasNext, setWasNext] = useState(0);
 
 
@@ -59,7 +57,6 @@ function RegisterComponent() {
             profilePic: !imageSrc.startsWith("data:image/") || imageSrc === "/static/media/user.4eddcc79e0488c03d196.png" ?
                 easter : imageSrc
         }
-        console.log(data)
         const res = await fetch('http://localhost:5000/api/Users', {
             'method': 'post',
             'headers': {
@@ -124,7 +121,6 @@ function RegisterComponent() {
             isPasswordValid = password_Validation(passwordVal, confirmPassword, notiPassword, userNickname, notiNick);
             isNickValid = Nickname_Validation(userNickname);
             if((isPasswordValid === 0) && (isNickValid === 0)){
-                setNewUserPassword(passwordVal.current.value || "");
                 // cancelColor("nickNameDivR", setNotiNick);
                 // cancelColor("confirmDivR", setNotPassword);
                 handleClick();
@@ -162,7 +158,7 @@ function RegisterComponent() {
             case 2:
                 return (
                     <>
-                        {PasswordRegistration(passwordVal, confirmPassword, notiPassword, notiNick, userNickname, newUserNickname)}
+                        {PasswordRegistration(passwordVal, confirmPassword, notiPassword, notiNick, userNickname)}
                         {
                             <div className="tooltipStyle">
                                 <div className="bi bi-question-circle-fill"

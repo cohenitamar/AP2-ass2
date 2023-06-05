@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+
 const http = require('http');
 const server = http.createServer(app)
 const {Server} = require("socket.io");
@@ -9,11 +10,12 @@ app.use(express.json());
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const mongoose = require('mongoose');
+
 const registerRouter = require('./routes/registerRoute');
 const loginRouter = require('./routes/loginRoutes')
 const chatsRouter = require('./routes/chatsRoutes')
 
+const mongoose = require('mongoose');
 require('custom-env').env(process.env.NODE_ENV, './config');
 mongoose.connect(process.env.CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -34,16 +36,12 @@ app.use('/api/Chats', chatsRouter);
 const sockets = {}
 
 io.on('connection', (socket) => {
-    console.log('A client connected');
 
     socket.on("connecting", (userUsername) => {
-        console.log(userUsername,"try to connect");
         if(sockets[userUsername]){
-            console.log("DISCONNECTING MULTIPLE LOGINS")
             sockets[userUsername] = null;
         }
         sockets[userUsername] = socket;
-        console.log(userUsername, "connected successfully");
     })
 
     socket.on("add-contact",(username) => {
@@ -52,7 +50,6 @@ io.on('connection', (socket) => {
         }
 
         sockets[username].emit("add-contact");
-        console.log(username)
     })
 
     socket.on("receive-message",(msgFormat) => {
@@ -67,6 +64,4 @@ io.on('connection', (socket) => {
 })
 
 
-server.listen(process.env.PORT, () => {
-    console.log("Listening to port 5000");
-});
+server.listen(process.env.PORT);

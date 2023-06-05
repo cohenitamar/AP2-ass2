@@ -1,7 +1,6 @@
 import React, {useRef} from 'react';
 import './login.css'
 import InputVal from "./InputVal";
-import Vcheck from "./Vcheck";
 import LoginButton from "./LoginButton";
 
 import {useNavigate} from "react-router-dom";

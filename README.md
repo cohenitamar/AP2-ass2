@@ -12,6 +12,8 @@ git clone https://github.com/cohenitamar/AP2-ass2
 ```
 Now you will have the cloned directory and you will be able to run both of the parts.
 
+#### Please make sure you have .NET (version 6.0), NodeJS and MongoDB installed on your pc before doing the following commands or nothing will work here.
+
 In order to run the ReactJS that will work with the Swagger you will have to open
 your cmd or a terminal and do the following from the **cloned directory**:
 ```

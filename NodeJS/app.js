@@ -38,26 +38,22 @@ const sockets = {}
 io.on('connection', (socket) => {
 
     socket.on("connecting", (userUsername) => {
-        if(sockets[userUsername]){
-            sockets[userUsername] = null;
-        }
         sockets[userUsername] = socket;
     })
 
-    socket.on("add-contact",(username) => {
-        if(!sockets[username]){
+    socket.on("add-contact", (username) => {
+        if (!sockets[username]) {
             return;
         }
 
         sockets[username].emit("add-contact");
     })
 
-    socket.on("receive-message",(msgFormat) => {
-        if(!sockets[msgFormat.receiverUsername]) {
-
+    socket.on("receive-message", (msgFormat) => {
+        if (!sockets[msgFormat.receiverUsername]) {
             return;
         }
-        sockets[msgFormat.receiverUsername].emit("receive-message",(msgFormat))
+        sockets[msgFormat.receiverUsername].emit("receive-message", (msgFormat))
         // Send a message to the client
     })
     socket.emit('message', 'Welcome to the server!');

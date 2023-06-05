@@ -60,7 +60,6 @@ function ChatPage({username, token}) {
             setNewBadge(prev => {
                 const newState = {...prev};
                 newState[newMessage['chatID']] = false;
-                console.log(newMessage['chatID'])
                 return newState;
             });
             setMessage([...message, newMessage.message]);
@@ -86,11 +85,9 @@ function ChatPage({username, token}) {
                 setContacts(newData);
                 setFilter(newData);
             });
-            console.log(msgFormat)
             // find(user from contact)
             setNewBadge(prev => {
                 const newState = {...prev};
-                console.log(msgFormat['chatID'])
                 newState[msgFormat['chatID']] = true
                 return newState;
             });

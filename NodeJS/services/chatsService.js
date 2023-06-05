@@ -116,7 +116,6 @@ const sendMessage = async (username, string, id) => {
         }
 
     } catch (error) {
-        console.log(error);
     }
 }
 
@@ -165,7 +164,6 @@ const getMessagesById = async (id, username) => {
         }
         return data;
     } catch (error) {
-        console.log(error);
     }
 
 }
@@ -196,10 +194,9 @@ const getOnlyMessages = async (id, username) => {
             data = [newMsg,...data]
 
         }
-        console.log(data);
         return data;
     } catch (error) {
-        console.log(error);
+        ///TODO TO DO HERE RETURN FALSE IN ALL FUNCS
     }
 
 }

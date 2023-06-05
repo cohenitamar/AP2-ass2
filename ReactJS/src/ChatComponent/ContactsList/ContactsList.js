@@ -14,7 +14,6 @@ function ContactList({contacts, setContactOnChat, setMessage, socket, token, API
         setNewBadge(prev => {
             const newState = {...prev};
             newState[id] = false;
-            console.log(id)
             return newState;
         });
         API_getChatsByID(id).then(data => {

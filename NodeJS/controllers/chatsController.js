@@ -1,7 +1,6 @@
 const chatsService = require('../services/chatsService')
 const jwt = require("jsonwebtoken")
-const Message = require("../models/Messages");
-const User = require("../models/Users").model;
+
 
 
 const postChats = async (req, res) => {

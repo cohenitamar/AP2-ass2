@@ -102,7 +102,6 @@ function RegisterComponent() {
             setNotification(<br/>);
         }
 
-    //TODO: ADD VALIDATION TO NICKNAME IN THE PASSWORD PAGE
     const handleNext = () => {
         let isNameValid = 1;
         let isPasswordValid = 1;
@@ -164,8 +163,6 @@ function RegisterComponent() {
                                 <div className="bi bi-question-circle-fill"
                                      data-bs-toggle="tooltip"
                                      data-bs-placement="left"
-                                    ///TODO need to make a condition like
-                                    ///TODO {condition === state ? showRules : unshowRules}
                                      onClick={showRules}>
                                     <span className="tooltip-logo"></span> What is a valid password?
                                 </div>

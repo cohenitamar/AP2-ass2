@@ -3,16 +3,17 @@ const User = require('../models/Users').model;
 const Message = require('../models/Messages').model;
 
 
-
-
 const postChats = async (user1, user2) => {
     try {
         if (user1 === user2) {
-            return false
+            return -1;
         }
 
         const u1 = await User.findOne({username: user1});
         const u2 = await User.findOne({username: user2});
+        if (u1 === null || u2 === null) {
+            return -2;
+        }
         const sender1 = {
             username: u1.username,
             displayName: u1.displayName,
@@ -35,12 +36,10 @@ const postChats = async (user1, user2) => {
 
         });
     } catch (error) {
-        return false
+        return -10;
     }
 
 }
-
-
 
 
 function formatUser(data) {
@@ -79,11 +78,10 @@ const getChats = async (username) => {
         return data;
 
     } catch (error) {
-
+        return -10;
     }
 
 }
-
 
 
 const sendMessage = async (username, string, id) => {
@@ -93,6 +91,9 @@ const sendMessage = async (username, string, id) => {
             return false
         }
         var sender;
+        if (username !== chat.users.at(0) && username !== chat.users.at(1)) {
+            return false;
+        }
         if (chat.users[0] === username) {
             sender = chat.users[0];
         } else {
@@ -116,6 +117,7 @@ const sendMessage = async (username, string, id) => {
         }
 
     } catch (error) {
+        return -10;
     }
 }
 
@@ -124,10 +126,10 @@ const getMessagesById = async (id, username) => {
     try {
         const chat = await Chat.findById(id);
         if (!chat) {
-            return false
+            return -1;
         }
         if (username !== chat.users.at(0) && username !== chat.users.at(1)) {
-            return false;
+            return -1;
         }
         var user1, user2
         if (chat.users[0] === username) {
@@ -164,12 +166,9 @@ const getMessagesById = async (id, username) => {
         }
         return data;
     } catch (error) {
+        return -10;
     }
-
 }
-
-
-
 
 
 const getOnlyMessages = async (id, username) => {
@@ -181,27 +180,25 @@ const getOnlyMessages = async (id, username) => {
         if (username !== chat.users.at(0) && username !== chat.users.at(1)) {
             return false;
         }
-       var data = []
-        for (msg of chat.messages){
+        var data = []
+        for (msg of chat.messages) {
             var newMsg = {
-                id : msg._id,
-                sender : {
-                    username : msg.sender
+                id: msg._id,
+                sender: {
+                    username: msg.sender
                 },
-                created:msg.created,
-                content:msg.content
+                created: msg.created,
+                content: msg.content
             }
-            data = [newMsg,...data]
+            data = [newMsg, ...data]
 
         }
         return data;
     } catch (error) {
-        ///TODO TO DO HERE RETURN FALSE IN ALL FUNCS
+        return -10;
     }
 
 }
-
-
 
 
 const deleteChatById = async (id, username) => {
@@ -209,10 +206,10 @@ const deleteChatById = async (id, username) => {
     try {
         chatUser = await Chat.findOne({_id: id});
     } catch (error) {
-        return false;
+        return -1;
     }
     if (!chatUser) {
-        return false;
+        return -1;
     }
     if (username !== chatUser.users[0] && username !== chatUser.users[1]) {
         return -1;
@@ -221,7 +218,7 @@ const deleteChatById = async (id, username) => {
         await Chat.deleteOne({_id: id});
         return true;
     } catch (err) {
-        return false;
+        return -10;
     }
 }
 

@@ -3,45 +3,6 @@ const User = require('../models/Users').model;
 const Message = require('../models/Messages').model;
 
 
-const postChats = async (user1, user2) => {
-    try {
-        if (user1 === user2) {
-            return -1;
-        }
-
-        const u1 = await User.findOne({username: user1});
-        const u2 = await User.findOne({username: user2});
-        if (u1 === null || u2 === null) {
-            return -2;
-        }
-        const sender1 = {
-            username: u1.username,
-            displayName: u1.displayName,
-            profilePic: u1.profilePic
-        }
-        const sender2 = {
-            username: u2.username,
-            displayName: u2.displayName,
-            profilePic: u2.profilePic
-        }
-        const newChat = new Chat({
-            users: [sender1.username, sender2.username],
-            messages: []
-        })
-
-        await newChat.save();
-        return await ({
-            id: newChat._id,
-            user: [sender1, sender2]
-
-        });
-    } catch (error) {
-        return -10;
-    }
-
-}
-
-
 function formatUser(data) {
     return {
         username: data.username,
@@ -50,6 +11,41 @@ function formatUser(data) {
 
     }
 }
+
+function formatLastMessage(data) {
+    return {
+        id: data._id,
+        created: data.created,
+        content: data.content
+
+    }
+}
+
+const postChats = async (him, me) => {
+    try {
+        if (him === me) {
+            return -1;
+        }
+        const formattedHim = formatUser(await User.findOne({username: him}));
+        if (formattedHim === null || me === null) {
+            return -2;
+        }
+        const newChat = new Chat({
+            users: [him, me],
+            messages: []
+        })
+        await newChat.save();
+        return await ({
+            id: newChat._id,
+            user: formattedHim
+
+        });
+    } catch (error) {
+        return -10;
+    }
+}
+
+
 
 const getChats = async (username) => {
     try {
@@ -64,7 +60,8 @@ const getChats = async (username) => {
             if (chat.messages.length === 0) {
                 lastMsg = null;
             } else {
-                lastMsg = chat.messages[chat.messages.length - 1];
+                lastMsg = formatLastMessage(chat.messages[chat.messages.length - 1]);
+
             }
             var user;
             if (user1trim.username === username) {
@@ -111,9 +108,9 @@ const sendMessage = async (username, string, id) => {
         await chat.save();
         return {
             id: message._id,
+            created: date,
             sender: formatUser(user),
-            content: string,
-            created: date
+            content: string
         }
 
     } catch (error) {
@@ -153,8 +150,8 @@ const getMessagesById = async (id, username) => {
             }
             var newData = {
                 id: msg._id,
-                sender: sender,
                 created: msg.created,
+                sender: sender,
                 content: msg.content
             }
             msgArray = [...msgArray, newData];
@@ -184,10 +181,10 @@ const getOnlyMessages = async (id, username) => {
         for (msg of chat.messages) {
             var newMsg = {
                 id: msg._id,
+                created: msg.created,
                 sender: {
                     username: msg.sender
                 },
-                created: msg.created,
                 content: msg.content
             }
             data = [newMsg, ...data]

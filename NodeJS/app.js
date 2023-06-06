@@ -57,6 +57,13 @@ io.on('connection', (socket) => {
         // Send a message to the client
     })
     socket.emit('message', 'Welcome to the server!');
+
+    socket.on("closeSocket",(username)=>{
+        socket.in(username).emit("closeSocket");
+      socket.leave(username);
+
+
+    })
 })
 
 

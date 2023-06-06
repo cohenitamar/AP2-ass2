@@ -22,7 +22,7 @@ npm i
 npm start
 go to your browser and enter the following URL: http://localhost:3000
 
-NOTE: Don't forget to run the Swagger server, otherwise the project won't work!
+NOTE: Don't forget to run the Swagger server or the NodeJS one, otherwise the project won't work!
 ```
 
 In order to run the ReactJS project (the build) that will run with the NodeJS server that we wrote you will have to open
@@ -30,7 +30,10 @@ your CMD or a terminal and do the following from the **cloned directory**:
 ```
 cd NodeJS
 npm i
-node app.js
+npm start
+
+will run by default on port 5000 and will connect the database to "mongodb://127.0.0.1:27017/chat" 
+in order to change those values you can do that by editing the .env.local file, make sure you put valid values
 
 go to your browser and enter the following URL: http://localhost:5000
 ```

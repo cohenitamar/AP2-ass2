@@ -16,6 +16,8 @@ function ChatPage({username, token}) {
 
     const [newMessage, setNewMessage] = useState(null);
 
+    const [disconnect, setDisconnect] = useState(false);
+
     const [newBadge, setNewBadge] = useState({});
 
 
@@ -51,6 +53,18 @@ function ChatPage({username, token}) {
         return false;
     }
 
+
+    useEffect(()=>{
+        if(disconnect){
+            socket.current.close();
+            console.log("closed");
+        }
+
+
+
+
+
+    },[disconnect]);
 
     useEffect(() => {
         if (isEmpty(contactOnChat)) {
@@ -93,7 +107,8 @@ function ChatPage({username, token}) {
             });
             setNewMessage(msgFormat);
         });
-        socket.current.on("disconnect", () => {
+       socket.current.on("closeSocket", () => {
+            setDisconnect(true);
         });
         API_getChats().then(data => {
             const newData = Adapters.ADAPTER_contactList(JSON.parse(data));

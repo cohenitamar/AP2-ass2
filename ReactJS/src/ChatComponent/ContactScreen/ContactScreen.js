@@ -21,7 +21,7 @@ function ContactScreen({
                 <ContactList contacts={filters} newBadge={newBadge} setNewBadge={setNewBadge}
                              setContactOnChat={setContactOnChat} setMessage={setMessage} token={token} socket={socket}
                              API_getChatsByID={API_getChatsByID}/>
-                <Logout/>
+                <Logout socket={socket} username={username}/>
             </div>
         </div>
     );

@@ -161,7 +161,7 @@ const deleteChatById = async (req, res) => {
         } else if (sent === -1) {
             return res.status(401).json("Unauthorized");
         } else {
-            res.send(sent);
+            res.send();
         }
     } else {
         return res.status(400).json("Bad Request")

@@ -26,7 +26,7 @@ function ContactModal({onAddContact, filterUpdate, contactsList, socket, searchB
                 return
             }
             contact = JSON.parse(contact)
-            socket.current.emit("add-contact",contact["user"][0]["username"]);
+            socket.current.emit("add-contact",contact["user"]["username"]);
 
 
             API_getChats().then(data => {

@@ -28,18 +28,27 @@ const postChats = async (user1, user2) => {
             users: [sender1.username, sender2.username],
             messages: []
         })
-
         await newChat.save();
         return await ({
             id: newChat._id,
-            user: [sender1, sender2]
+            user: sender1
 
         });
     } catch (error) {
         return -10;
     }
-
 }
+
+/*
+{
+  "id": 10,
+  "user": {
+    "username": "BLABLA",
+    "displayName": "POLO ",
+    "profilePic": "/static/media/easter_egg.d0d1d09d533aee0fddf4.png"
+  }
+}
+ */
 
 
 function formatUser(data) {
@@ -47,6 +56,15 @@ function formatUser(data) {
         username: data.username,
         displayName: data.displayName,
         profilePic: data.profilePic
+
+    }
+}
+
+function formatLastMessage(data) {
+    return {
+        id: data._id,
+        created: data.created,
+        content: data.content
 
     }
 }
@@ -64,7 +82,8 @@ const getChats = async (username) => {
             if (chat.messages.length === 0) {
                 lastMsg = null;
             } else {
-                lastMsg = chat.messages[chat.messages.length - 1];
+                lastMsg = formatLastMessage(chat.messages[chat.messages.length - 1]);
+
             }
             var user;
             if (user1trim.username === username) {
@@ -111,9 +130,9 @@ const sendMessage = async (username, string, id) => {
         await chat.save();
         return {
             id: message._id,
+            created: date,
             sender: formatUser(user),
-            content: string,
-            created: date
+            content: string
         }
 
     } catch (error) {
@@ -153,8 +172,8 @@ const getMessagesById = async (id, username) => {
             }
             var newData = {
                 id: msg._id,
-                sender: sender,
                 created: msg.created,
+                sender: sender,
                 content: msg.content
             }
             msgArray = [...msgArray, newData];
@@ -184,10 +203,10 @@ const getOnlyMessages = async (id, username) => {
         for (msg of chat.messages) {
             var newMsg = {
                 id: msg._id,
+                created: msg.created,
                 sender: {
                     username: msg.sender
                 },
-                created: msg.created,
                 content: msg.content
             }
             data = [newMsg, ...data]

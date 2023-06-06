@@ -12,7 +12,7 @@ const createUser = async(req,res) =>{
         return res.status(409).json("User already exist.")
     }
     else{
-        res.json(x);
+        res.send();
     }
 }
 
